@@ -1,0 +1,41 @@
+<div class="page-login page-login-en">
+    <div class="container">
+        <div class="card p-a-2" ng-if="!itech.token" style="max-width: 400px; margin: auto; margin-bottom: 5rem;">
+            <form id="login-form" ng-submit="itech.loginSubmit();">
+                <div class="card-title text-xs-center" id="div-login-msg">
+                    <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>
+                    <span id="text-login-msg">Type your username and password.</span>
+                </div>
+                <div class="card-text p-b-3">
+                    <input 
+                        id="login_username" 
+                        class="form-control m-b-1" 
+                        type="text" 
+                        placeholder="Username" 
+                        ng-model="itech.loginUsername"
+                        required>
+                    <input 
+                        id="login_password" 
+                        class="form-control m-b-1" 
+                        type="password" 
+                        placeholder="Password" 
+                        ng-model="itech.loginPassword"
+                        required>
+                </div>
+                <div class="p-b-1">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+                </div>
+            </form>
+        </div>
+        <div ng-if="itech.token" class="card p-a-2 text-xs-center" style="max-width: 400px; margin: auto; margin-bottom: 5rem;">
+            <h4 class="">You have already login</h4>
+            <h6 class="p-b-2 text-danger">Do you want to logout now?</h6>
+            <div class="p-x-2 p-b-1">
+                <button ng-click="itech.logoutSubmit();" class="btn btn-danger btn-lg btn-block">
+                    Logout now
+                </button>
+            </div>
+            <button ui-sref="home" class="btn btn-primary btn-lg btn-block">Back to Home</button>
+        </div>
+    </div>
+</div>

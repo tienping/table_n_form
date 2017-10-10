@@ -1,0 +1,55 @@
+/* SOCIAL MENU */
+.social-icons ul, .social-icons li { border: 0!important; list-style: none; padding-left: 0; }
+.social-icons li { border: none; display: inline-block; margin: 0; }
+.social-icons li a { font-size: 18px; line-height: 37px; list-style: none; display: inline-block; text-align: center; height: 35px; width: 35px; 
+	margin-right: 5px; margin-bottom: 5px; border-radius: 50%; background-color: #fff; color: #000 !important;
+  -webkit-transition: background-color  0.5s;
+     -moz-transition: background-color  0.5s;
+       -o-transition: background-color  0.5s;
+          transition: background-color  0.5s;
+}
+.social-icons li a[href*="twitter.com"] .fa:before{ content:"\f099"; }
+.social-icons li a[href*="xing.com"] .fa:before{ content:"\f168"; }
+.social-icons li a[href*="facebook.com"] .fa:before{ content:"\f09a"; }
+.social-icons li a[href*="github.com"] .fa:before{ content:"\f09b"; }
+.social-icons li a[href*="/feed"] .fa:before{ content:"\f09e"; }
+.social-icons li a[href*="dribbble.com"] .fa:before{ content: "\f17d"; }
+.social-icons li a[href*="skype"] .fa:before{ content: "\f17e"; }
+.social-icons li a[href*="foursquare.com"] .fa:before{ content: "\f180"; }
+.social-icons li a[href*="spotify.com"] .fa:before{ content: "\f1bc"; }
+.social-icons li a[href*="soundcloud.com"] .fa:before{ content: "\f1be"; }
+.social-icons li a[href*="vimeo.com"] .fa:before{ content: "\f194"; }
+.social-icons li a[href*="youtube.com"] .fa:before{ content: "\f167"; }
+.social-icons li a[href*="instagram.com"] .fa:before{ content: "\f16d"; }
+.social-icons li a[href*="flickr.com"] .fa:before{ content: "\f16e"; }
+.social-icons li a[href*="tumblr.com"] .fa:before{ content: "\f173"; }
+.social-icons li a[href*="pinterest.com"] .fa:before{ content: "\f0d2"; }
+.social-icons li a[href*="plus.google.com"] .fa:before{ content: "\f0d5"; }
+.social-icons li a[href*="linkedin.com"] .fa:before{ content: "\f0e1"; }
+.social-icons li a[href*="mailto"] .fa:before{ content: "\f003"; }
+.social-icons li a span{ display: none; }
+.social-icons li a:hover { color: #fff!important; }
+.social-icons li a[href*="facebook.com"]:hover { background-color: #4265b9; }
+.social-icons li a[href*="twitter.com"]:hover { background-color: #55ACEE; }
+.social-icons li a[href*="dribbble.com"]:hover { background-color: #ea4c89; }
+.social-icons li a[href*="flickr.com"]:hover { background-color: #ff0084; }
+.social-icons li a[href*="plus.google.com"]:hover { background-color: #d62408; }
+.social-icons li a[href*="skype"]:hover { background-color: #0bbff2; }
+.social-icons li a[href*="pinterest.com"]:hover { background-color: #c31e26; }
+.social-icons li a[href*="linkedin.com"]:hover { background-color: #005987; }
+.social-icons li a[href*="vimeo.com"]:hover { background-color: #1bb6ec; }
+.social-icons li a[href*="tumblr.com"]:hover { background-color: #35506b; }
+.social-icons li a[href*="youtube.com"]:hover { background-color: #df3333; }
+.social-icons li a[href*="instagram.com"]:hover { background-color: #F95B60; }
+.social-icons li a[href*="/feed"]:hover { background-color: #f39c12; }
+.social-icons li a[href*="foursquare.com"]:hover { background-color: #2398C9; }
+.social-icons li a[href*="soundcloud.com"]:hover { background-color: #F50; }
+.social-icons li a[href*="github.com"]:hover { background-color: #4183C4; }
+.social-icons li a[href*="xing.com"]:hover { background-color: #006567; }
+.social-icons li a[href*="spotify.com"]:hover { background-color: #81b71a; }
+.social-icons li a[href*="mailto"]:hover { background-color: #DA4453; }
+
+
+table.table.table-hover tbody tr:hover {
+    background-color: lightblue;
+}
