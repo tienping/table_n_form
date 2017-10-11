@@ -17,6 +17,14 @@
             url: '/home',
             templateUrl: 'pages/home/home-' + lang + '.html'
         })
+        .state('vehicles', {
+            url: '/vehicles',
+            templateUrl: 'pages/vehicles/vehicles-' + lang + '.html'     
+        })
+        .state('users', {
+            url: '/users',
+            templateUrl: 'pages/users/users-' + lang + '.html'     
+        })
         .state('login', {
             url: '/login',
             templateUrl: 'pages/login/login-' + lang + '.html'     
@@ -36,6 +44,23 @@
 
         itech.token           = getCookie('itech-auth');
         itech.currentLanguage = getCookie('tp-lang') || 'en';
+
+        itech.homeSelections  = [
+            {
+                label: 'Daily',
+                key: 'daily',
+                type: 'list'
+            }, {
+                label: 'Breakdown',
+                key: 'breakdown',
+                type: 'list'
+            }, {
+                label: 'Report',
+                key: 'report',
+                type: 'report'
+            }];
+        itech.tabSelected     = itech.homeSelections[0];
+        
 
         // itech.data      = {
         //     en: {},
@@ -62,6 +87,8 @@
             if (!itech.token && $state.current.name !== 'login') {
                 $state.go('login');
                 itech.openModal('login-notification');
+            } else {
+                itech.pageTitle= $state.current.name;
             }
         });
 

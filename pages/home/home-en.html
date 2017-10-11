@@ -1,35 +1,59 @@
 <div class="page-home page-home-en">
     <section class="container">
-        <table class="table table-striped table-bordered table-hover">
-            <thead class="thead-inverse">
-                <tr>
-                    <th>head 1</th>
-                    <th>head 2</th>
-                    <th>head 3</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>val 1</td>
-                    <td>val 2</td>
-                    <td>val 3</td>
-                </tr>
-                <tr>
-                    <td>val 4</td>
-                    <td>val 5</td>
-                    <td>val 6</td>
-                </tr>
-                <tr>
-                    <td>val 1</td>
-                    <td>val 2</td>
-                    <td>val 3</td>
-                </tr>
-                <tr>
-                    <td>val 4</td>
-                    <td>val 5</td>
-                    <td>val 6</td>
-                </tr>
-            </tbody>
-        </table>
+        <hr class="m-t-0">
+        <div class="tab-selections m-b-2">
+            <div class="row">
+                <div class="col-md-4" ng-repeat="tab in itech.homeSelections">
+                    <div class="menu-item tab-select text-xs-center">
+                        <button class="btn p-x-2"
+                                ng-bind="tab.label" 
+                                ng-click="itech.tabSelected = tab" 
+                                ng-class="itech.tabSelected == tab ? 'active btn-success' : 'active btn-info'">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="m-b-2">
+        <div class="home-content">
+            <div class="home-content-item" ng-repeat="item in itech.homeSelections" ng-show="itech.tabSelected.key == item.key">
+                <section class="item-listing" ng-if="item.type == 'list'">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>head 1</th>
+                                <th>head 2</th>
+                                <th>head 3</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>val 1</td>
+                                <td>val 2</td>
+                                <td>val 3</td>
+                            </tr>
+                            <tr>
+                                <td>val 4</td>
+                                <td>val 5</td>
+                                <td>val 6</td>
+                            </tr>
+                            <tr>
+                                <td>val 1</td>
+                                <td>val 2</td>
+                                <td>val 3</td>
+                            </tr>
+                            <tr>
+                                <td>val 4</td>
+                                <td>val 5</td>
+                                <td>val 6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section class="item-report" ng-if="item.type == 'report'">
+                    reporting
+                </section>
+            </div>
+        </div>
     </section>
 </div>

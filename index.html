@@ -12,7 +12,9 @@
         <link  href="assets/responsive-menu.css" rel="stylesheet">
         
         <link  href="pages/home/home.css" rel="stylesheet">
-        <link  href="pages/apply/apply.css" rel="stylesheet">
+        <link  href="pages/vehicles/vehicles.css" rel="stylesheet">
+        <link  href="pages/users/users.css" rel="stylesheet">
+        <link  href="pages/login/login.css" rel="stylesheet">
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,6 +41,21 @@
                     <li id="responsive-menu-item-home" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
                         <a ng-click="itech.showMenu = !itech.showMenu" ui-sref="home" class="responsive-menu-item-link">
                             <span ng-bind="itech.currentLanguage == 'en' ? 'Home' : 'Laman Utama'"></span>
+                        </a>
+                    </li>
+                    <li id="responsive-menu-item-vehicles" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
+                        <a ng-click="itech.showMenu = !itech.showMenu" ui-sref="vehicles" class="responsive-menu-item-link">
+                            <span ng-bind="itech.currentLanguage == 'en' ? 'Vehicles' : 'Kenderaan'"></span>
+                        </a>
+                    </li>
+                    <li id="responsive-menu-item-users" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
+                        <a ng-click="itech.showMenu = !itech.showMenu" ui-sref="users" class="responsive-menu-item-link">
+                            <span ng-bind="itech.currentLanguage == 'en' ? 'Users' : 'Pengunna'"></span>
+                        </a>
+                    </li>
+                    <li id="responsive-menu-item-login" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
+                        <a ng-click="itech.showMenu = !itech.showMenu" ui-sref="login" class="responsive-menu-item-link">
+                            <span ng-bind="itech.token ? 'Logout' : 'Login'"></span>
                         </a>
                     </li>
                 </ul>
@@ -80,8 +97,14 @@
                                 <li ui-sref-active="active" class="header-menu menu-item-home"><a title="Home" ui-sref="home">
                                     <span ng-bind="itech.currentLanguage == 'en' ? 'Home' : 'Laman Utama'"></span>
                                 </a></li>
-                                <li ui-sref-active="active" class="header-menu menu-item-apply"><a title="Apply Now" ui-sref="login">
-                                    <span ng-bind="itech.currentLanguage == 'en' ? 'Apply Now' : 'Mohon Sekarang'"></span>
+                                <li ui-sref-active="active" class="header-menu menu-item-vehicles"><a title="Vehicles" ui-sref="vehicles">
+                                    <span ng-bind="itech.currentLanguage == 'en' ? 'Vehicles' : 'Kenderaan'"></span>
+                                </a></li>
+                                <li ui-sref-active="active" class="header-menu menu-item-users"><a title="Users" ui-sref="users">
+                                    <span ng-bind="itech.currentLanguage == 'en' ? 'Users' : 'Pengguna'"></span>
+                                </a></li>
+                                <li ui-sref-active="active" class="header-menu menu-item-login"><a title="Login or Logou" ui-sref="login">
+                                    <span ng-bind="itech.token ? 'Logout' : 'Login'"></span>
                                 </a></li>
                             </ul>
                         </nav>
@@ -90,6 +113,7 @@
             </div>
         </div>
         <div class="site-content">
+            <h1 class="page-title container text-xs-center text-uppercase" ng-bind="itech.pageTitle"></h1>
             <section class="_main-ui-view _content p-t-1" ui-view autoscroll="false"></section>
         </div>
 
