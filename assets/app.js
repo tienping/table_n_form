@@ -89,6 +89,9 @@
                 itech.openModal('login-notification');
             } else {
                 itech.pageTitle= $state.current.name;
+                if (itech.pageTitle === 'login') {
+                    itech.pageTitle = itech.token ? 'Logout' : 'Login';
+                }
             }
         });
 
