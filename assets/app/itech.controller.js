@@ -5,8 +5,8 @@
         .module('itech.controller',[])
         .controller('itechCtrl', itechCtrl);
 
-    itechCtrl.$inject = ['$scope', '$rootScope', '$state', 'loginRs', 'Excel', '$timeout'];
-    function itechCtrl($scope, $rootScope, $state, loginRs, Excel, $timeout) {
+    itechCtrl.$inject = ['$scope', '$rootScope', '$state', 'userRs', 'vehicleRs', 'reportRs', 'Excel', '$timeout'];
+    function itechCtrl($scope, $rootScope, $state, userRs, vehicleRs, reportRs, Excel, $timeout) {
         var itech = this;
         
         itech.init           = init;
@@ -14,10 +14,17 @@
         itech.toggleLanguage = toggleLanguage;
         itech.loginSubmit    = loginSubmit;
         itech.logoutSubmit   = logoutSubmit;
+        itech.initHome       = initHome;
+        itech.changeTab      = changeTab;
         itech.exportToExcel  = exportToExcel;
 
-        itech.token           = getCookie('itech-auth');
+        itech.token           = getCookie(TOKEN_KEY);
         itech.currentLanguage = getCookie('tp-lang') || 'en';
+
+        itech.data = {
+            user: null,
+            vehicle: null
+        }
 
         itech.homeSelections  = [
             {
@@ -80,35 +87,46 @@
         }
 
         function toggleLanguage(lang) {
-            setCookie("tp-lang", lang, 3);
+            setCookie('tp-lang', lang, 3);
             location.reload();
         }
 
         function loginSubmit() {
-            // // test 
-            // var tokenString = 'login-cookie-token-string';
-            // setCookie("itech-auth", tokenString, 3);
-            // itech.token = tokenString;
-            // $state.go('home');
-            
-            loginRs.save({
-                "username": "admin",
-                "password": "password"
-            }, function successCallback() {
-                var tokenString = 'login-cookie-token-string';
-                setCookie("itech-auth", tokenString, 3);
-                itech.token = tokenString;
+            userRs.save({
+                param: 'login',
+                username: 'admin',
+                password: 'password'
+            }, function successCallback(response) {
+                setCookie(TOKEN_KEY, response.token, 3);
+                itech.token = response.token;
+                itech.data.user = response.user;
                 $state.go('home');
-            }, function failureCallback() {
-                alert('Login Failed... Please consult system administrator.');
+            }, function failureCallback(response) {
+                alert('Login Failed... Please consult system administrator.', response);
             });
         }
 
         function logoutSubmit() {
             var tokenString = 'login-cookie-token-string';
-            setCookie("itech-auth", '', 0);
+            setCookie(TOKEN_KEY, '', 0);
             itech.token = null;
             location.reload();
+        }
+
+        function initHome() {
+            itech.changeTab(itech.homeSelections[0].key);
+        }
+
+        function changeTab(key) {
+            if (key == 'report') {
+                if (!itech.data.vehicle) {
+                    reportRs.save({}, function successCallback(response) {
+                        itech.data.vehicle = response.vehicles;
+                    }, function failureCallback(response) {
+                        
+                    });
+                }
+            }
         }
 
         function exportToExcel(tableQuery, fileName) {

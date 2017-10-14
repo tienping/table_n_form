@@ -4,9 +4,14 @@
         .module('itech.main', ['ui.router', 'rzModule'])
         .config(itechConfig);
 
-    itechConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
+    itechConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$httpProvider'];
 
-    function itechConfig($stateProvider, $urlRouterProvider) {
+    function itechConfig($stateProvider, $urlRouterProvider, $httpProvider) {
+        var token = getCookie(TOKEN_KEY);
+        if (token) {
+            $httpProvider.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+        }
+
         var lang = getCookie('tp-lang') || 'en';
 
         $urlRouterProvider.otherwise('/home');
