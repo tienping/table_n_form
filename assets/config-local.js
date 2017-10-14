@@ -1,1 +1,1 @@
-DEBUG_MODE = 'live';
+DEBUG_MODE = false;
