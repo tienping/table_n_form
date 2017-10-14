@@ -1,11 +1,6 @@
 (function() {
     'use strict';
 
-    var apiUrl = 'http://chama666.com/itec/public/api/1.0';
-    if (DEBUG_MODE) {
-        apiUrl = "https://cors-anywhere.herokuapp.com/" + apiUrl;
-    }
-
     angular
         .module('itech.resources', ['ngResource'])
         .factory('userRs', userRs)
@@ -22,7 +17,7 @@
         // USER_CREATE_API = '/user/create'
         // USER_UPDATE_API = '/user/edit'
 
-        return $resource(apiUrl + '/user/:param', { param: '@param' });
+        return $resource(API_URL + '/user/:param', { param: '@param' });
     }
 
     function vehicleRs($resource) {
@@ -34,12 +29,12 @@
         // VEHICLE_DAILY_API = '/vehicle/check-list'
         // VEHICLE_BREAKDOWN_API = '/vehicle/breakdown'
 
-        return $resource(apiUrl + '/vehicle/:param', { param: '@param' });
+        return $resource(API_URL + '/vehicle/:param', { param: '@param' });
     }
 
     function reportRs($resource) {
         // REPORT_API = '/reports'
 
-        return $resource(apiUrl + '/reports');
+        return $resource(API_URL + '/reports');
     }
 })();
