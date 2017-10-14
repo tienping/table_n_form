@@ -1,4 +1,4 @@
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 var TOKEN_KEY = 'itech-auth';
 
