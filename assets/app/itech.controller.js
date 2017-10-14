@@ -100,7 +100,7 @@
                 setCookie(TOKEN_KEY, response.token, 3);
                 itech.token = response.token;
                 itech.data.user = response.user;
-                $state.go('home');
+                window.location.reload(false); 
             }, function failureCallback(response) {
                 alert('Login Failed... Please consult system administrator.', response);
             });
