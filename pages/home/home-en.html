@@ -3,9 +3,9 @@
         <hr class="m-t-0">
         <div class="tab-selections m-b-2">
             <div class="row">
-                <div class="col-md-4" ng-repeat="tab in itech.homeSelections">
+                <div class="col-sm-4" ng-repeat="tab in itech.homeSelections">
                     <div class="menu-item tab-select text-xs-center">
-                        <button class="btn p-x-2"
+                        <button class="btn p-x-2 m-b-1"
                                 ng-bind="tab.label" 
                                 ng-click="itech.tabSelected = tab; itech.changeTab(tab.key);" 
                                 ng-class="itech.tabSelected == tab ? 'active btn-success' : 'active btn-info'">
