@@ -18,37 +18,37 @@
         <div class="home-content">
             <div class="home-content-item" ng-repeat="item in itech.homeSelections" ng-show="itech.tabSelected.key == item.key">
                 <section class="item-listing" ng-if="item.type == 'list'">
-                    <table class="table table-striped table-bordered table-hover">
-                        <thead class="thead bg-primary">
-                            <tr>
-                                <th>head 1</th>
-                                <th>head 2</th>
-                                <th>head 3</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>val 1</td>
-                                <td>val 2</td>
-                                <td>val 3</td>
-                            </tr>
-                            <tr>
-                                <td>val 4</td>
-                                <td>val 5</td>
-                                <td>val 6</td>
-                            </tr>
-                            <tr>
-                                <td>val 1</td>
-                                <td>val 2</td>
-                                <td>val 3</td>
-                            </tr>
-                            <tr>
-                                <td>val 4</td>
-                                <td>val 5</td>
-                                <td>val 6</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div ng-show="itech.data.vehicle.length">
+                        <table id="table-{{ item.key }}" class="table table-striped table-bordered table-hover">
+                            <thead class="thead bg-primary">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Distance</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="vehicle in itech.data.vehicle">
+                                    <td class="vehicle-name"><i class="fa fa-car"></i> {{ vehicle.name }}</td>
+                                    <td>{{ vehicle.last_check.distance }}</td>
+                                    <td>{{ vehicle.last_check.time }}</td>
+                                    <td class="status-indicator-div">
+                                        <span class="status-indicator bg-success m-b-1">Active</span>
+                                        <span class="status-indicator bg-danger m-b-1">Uncheck</span>
+                                    </td>
+                                    <td>
+                                        <button clsss="cta-daily btn btn-secondary" ng-click="">Daily</button>
+                                        <button clsss="cta-breakdown btn btn-secondary" ng-click="">Breakdown</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div ng-hide="itech.data.vehicle.length">
+                        Loading...
+                    </div>
                 </section>
                 <section class="item-report" ng-if="item.type == 'report'">
                     <div ng-show="itech.data.vehicle.length">

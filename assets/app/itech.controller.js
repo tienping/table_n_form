@@ -28,12 +28,8 @@
 
         itech.homeSelections  = [
             {
-                label: 'Daily',
-                key: 'daily',
-                type: 'list'
-            }, {
-                label: 'Breakdown',
-                key: 'breakdown',
+                label: 'Daily & Breakdown',
+                key: 'daily_and_breakdown',
                 type: 'list'
             }, {
                 label: 'Report',
@@ -100,7 +96,7 @@
                 setCookie(TOKEN_KEY, response.token, 3);
                 itech.token = response.token;
                 itech.data.user = response.user;
-                window.location.reload(false); 
+                window.location.href = '/';
             }, function failureCallback(response) {
                 alert('Login Failed... Please consult system administrator.', response);
             });
@@ -114,19 +110,19 @@
         }
 
         function initHome() {
-            itech.changeTab(itech.homeSelections[0].key);
+            if (!itech.data.vehicle) {
+                vehicleRs.save({
+                    param: 'list'
+                }, function successCallback(response) {
+                    itech.data.vehicle = response.vehicles;
+                }, function failureCallback(response) {
+                    
+                });
+            }
         }
 
         function changeTab(key) {
-            if (key == 'report') {
-                if (!itech.data.vehicle) {
-                    reportRs.save({}, function successCallback(response) {
-                        itech.data.vehicle = response.vehicles;
-                    }, function failureCallback(response) {
-                        
-                    });
-                }
-            }
+            
         }
 
         function exportToExcel(tableQuery, fileName) {

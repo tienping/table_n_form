@@ -1,0 +1,7 @@
+.home-content-item table {
+    color: darkblue;
+    font-weight: 900;
+}
+.home-content-item table .status-indicator {
+    padding: 0.3rem;    
+}
