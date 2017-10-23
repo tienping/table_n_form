@@ -6,8 +6,8 @@
         .controller('itechCtrl', itechCtrl)
         .filter('toHourMinute', toHourMinute);
 
-    itechCtrl.$inject = ['$scope', '$rootScope', '$state', 'userRs', 'vehicleRs', 'reportRs', 'Excel', '$timeout'];
-    function itechCtrl($scope, $rootScope, $state, userRs, vehicleRs, reportRs, Excel, $timeout) {
+    itechCtrl.$inject = ['$scope', '$rootScope', '$state', 'userRs', 'vehicleRs', 'reportRs', 'Excel', '$timeout', '$location'];
+    function itechCtrl($scope, $rootScope, $state, userRs, vehicleRs, reportRs, Excel, $timeout, $location) {
         var itech = this;
         
         itech.init           = init;
@@ -125,7 +125,8 @@
                 setCookie(TOKEN_KEY, response.token, 3);
                 itech.token = response.token;
                 itech.data.user = response.user;
-                window.location.href = '/';
+                $location.path('/home');
+                window.location.reload();
             }, function failureCallback(response) {
                 alert('Login Failed... Please consult system administrator.', response);
             }, 'userRs.save');
