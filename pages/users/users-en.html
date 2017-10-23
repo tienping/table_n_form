@@ -1,14 +1,23 @@
-<div class="page-users page-users-en english">
+<div class="page-users page-users-en english" ng-init="itech.getUserList(); ">
         <section class="container">
-            <div class="users-list">
-                <div class="user-item" ng-repeat="user in [1,2,3,4,5,6]">
-                    <div class="col-xs-9">
-                        <div class="username">Username</div>
-                    </div>
-                    <div class="col-xs-3">
-                        <button class="action-edit btn btn-info">
-                            edit-icon
-                        </button>
+            <div class="user-list">
+                <div class="text-xs-right m-b-2">
+                    <button class="btn btn-success btn-sm">
+                        <i class="fa fa-plus"></i>
+                        <span>Add New</span>
+                    </button>
+                </div>
+                <div class="itech-table user-item p-y-1" ng-repeat="user in itech.data.userlist">
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <div class="user-name"><i class="fa fa-user"></i> <span ng-bind="user.name"></span></div>    
+                        </div>
+                        <div class="col-xs-3 text-xs-right">
+                            <button class="action-edit btn btn-info btn-sm">
+                                <i class="fa fa-pencil"></i>
+                                Edit
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

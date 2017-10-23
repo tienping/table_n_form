@@ -53,3 +53,8 @@
 table.table.table-hover tbody tr:hover {
     background-color: lightblue;
 }
+
+.itech-table {
+  color: darkblue;
+  font-weight: 900;
+}

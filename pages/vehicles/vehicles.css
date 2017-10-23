@@ -1,0 +1,18 @@
+.page-vehicles .vehicle-list {
+    width: 70%;
+    min-width: 700px;
+    margin: auto;
+}
+
+.page-vehicles .vehicle-list .vehicle-item {
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 2px 3px 10px 0px RGBA(0, 0, 0, 0.2);
+}
+.page-vehicles .vehicle-list .vehicle-item:hover {
+    background-color: #FEFEFE;
+}
+
+.page-vehicles .vehicle-list .vehicle-name {
+    font-size: 150%;
+}

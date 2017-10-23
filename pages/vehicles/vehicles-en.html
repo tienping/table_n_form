@@ -1,15 +1,24 @@
 <div class="page-vehicles page-vehicles-en english">
     <section class="container">
         <div class="vehicle-list">
-            <div class="vehicle-item" ng-repeat="vehicle in [1,2,3,4,5,6]">
-                <div class="col-xs-9">
-                    <div class="vehicle-name">name</div>
-                    <div class="vehicle-desc">description</div>
-                </div>
-                <div class="col-xs-3">
-                    <button class="action-edit btn btn-info">
-                        edit-icon
-                    </button>
+            <div class="text-xs-right m-b-2">
+                <button class="btn btn-success btn-sm">
+                    <i class="fa fa-plus"></i>
+                    <span>Add New</span>
+                </button>
+            </div>
+            <div class="itech-table vehicle-item p-y-1" ng-repeat="vehicle in itech.data.vehicle">
+                <div class="row">
+                    <div class="col-xs-9">
+                        <div class="vehicle-name"><i class="fa fa-car"></i> <span ng-bind="vehicle.name"></span></div>
+                        <div class="vehicle-desc text-muted" ng-bind="itech.companies[vehicle.company_id].label"></div>
+                    </div>
+                    <div class="col-xs-3 text-xs-right">
+                        <button class="action-edit btn btn-info btn-sm">
+                            <i class="fa fa-pencil"></i>
+                            Edit
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
