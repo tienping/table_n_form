@@ -12,7 +12,7 @@
             </div>
             <div class="tab-select pull-right">
                 <span>Company: </span>
-                <select id="company-selection">
+                <select id="company-selection" class="itech-selection">
                     <option ng-repeat="company in itech.companies" ng-bind="company.label" ng-value="company.label"></option>
                 </select>
             </div>
@@ -26,10 +26,10 @@
                             <thead class="thead bg-primary">
                                 <tr>
                                     <th>Name</th>
-                                    <th>Distance</th>
-                                    <th>Time</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th width="150px">Distance</th>
+                                    <th width="150px">Time</th>
+                                    <th width="150px">Status</th>
+                                    <th width="200px">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -37,13 +37,29 @@
                                     <td class="vehicle-name"><i class="fa fa-car"></i> {{ vehicle.name }}</td>
                                     <td>{{ vehicle.last_check.distance }} KM</td>
                                     <td>{{ vehicle.last_check.time | toHourMinute }}</td>
-                                    <td class="status-indicator-div">
-                                        <span class="status-indicator small bg-success m-b-1">Active</span>
-                                        <span class="status-indicator small bg-danger m-b-1">Uncheck</span>
+                                    <td class="status-indicator-div text-xs-center">
+                                        <div class="status-indicator small"
+                                              ng-bind="vehicle.today_checkin ? 'Check' : 'Uncheck'"
+                                              ng-class="vehicle.today_checkin ? 'bg-success' : 'bg-warning'">
+                                        </div>
+                                        <div class="status-indicator small"
+                                              ng-bind="vehicle.breakdown ? 'Breakdown' : 'Acitve'"
+                                              ng-class="vehicle.breakdown ? 'bg-danger' : 'bg-success'">
+                                        </div>
                                     </td>
                                     <td>
-                                        <button clsss="cta-daily btn btn-secondary" ng-click="">Daily Check</button>
-                                        <button clsss="cta-breakdown btn btn-secondary" ng-click="">Breakdown</button>
+                                        <button class="cta-daily btn btn-secondary btn-sm btn-block" 
+                                                ng-click="itech.openModal('daily-report-form');
+                                                    itech.dailyReport.field.vehicleName = vehicle.name;
+                                                    itech.dailyReport.field.companyName = vehicle.companies_list.name;">
+                                            Perform Daily Check
+                                        </button>
+                                        <button class="cta-breakdown btn btn-secondary btn-sm btn-block"
+                                                ng-click="itech.openModal('breakdown-report-form');
+                                                    itech.breakdownReport.field.vehicleName = vehicle.name;
+                                                    itech.breakdownReport.field.companyName = vehicle.companies_list.name;">
+                                            Report Breakdown
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -68,12 +84,12 @@
                             </div>
                         </div>
                         <table id="table-{{ item.key }}" class="itech-table table table-striped table-bordered table-hover">
-                            <thead class="thead bg-primary">
+                            <thead class="thead bg-success">
                                 <tr>
                                     <th>Name</th>
-                                    <th>Number of Uncheck</th>
-                                    <th>Number of Breakdown</th>
-                                    <th>Last Breakdown</th>
+                                    <th width="200px">Number of Uncheck</th>
+                                    <th width="200px">Number of Breakdown</th>
+                                    <th width="200px">Last Breakdown</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,6 +107,113 @@
                     </div>
                 </section>
             </div>
+
         </div>
     </section>
+
+    <div id="daily-report-form" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.dailyReport.title"></h3>
+                </div>
+                <div class="modal-body text-xs-center">  
+                    <form class="form-horizontal text-xs-left" name="itech.addUser">
+                        <div class="m-t-1 m-b-2">
+                            <div class="form-group">
+                                <div class="vehicle-name strong"><strong># <span ng-bind="itech.dailyReport.field.vehicleName"></span></strong></div>
+                                <div class="company-name" ng-bind="itech.dailyReport.field.companyName"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputDistance" class="col-sm-4 control-label">Distance *</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputDistance" placeholder="Distance travelled" ng-model="itech.dailyReport.field.distance">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label for="inputTime" class="col-sm-4 control-label">Time</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputTime" placeholder="Time checked" ng-model="itech.dailyReport.field.time">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputChecklist" class="col-sm-4 control-label">Checklist *</label>
+                                <div class="col-sm-8">
+                                    <div class="checklist-item" ng-repeat="item in itech.vehicleParts">
+                                        <input class="checklist-input"
+                                               id=="'inputCheclist_' + {{ item.label }}"
+                                               type="checkbox" 
+                                               ng-model="itech.dailyReport.field.checklist[item.label]">
+                                        <label class="checklist-label"
+                                               for="'inputCheclist_' + {{ item.label }}"
+                                               ng-bind="item.label"
+                                               ng-click="itech.dailyReport.field.checklist[item.label] = !itech.dailyReport.field.checklist[item.label]"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-messages text-xs-center p-b-2" ng-show="itech.dailyReport.messages.length">
+                            <div class="text-danger small" ng-repeat="msg in itech.dailyReport.messages" ng-bind="msg.text"></div>
+                        </div>
+                        <div class="form-action text-xs-center">
+                            <button type="button" ng-click="itech.formSubmit(itech.dailyReport);" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="breakdown-report-form" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.breakdownReport.title"></h3>
+                </div>
+                <div class="modal-body">  
+                    <form class="form-horizontal" name="itech.addUser">
+                        <div class="m-t-1 m-b-2">
+                            <div class="form-group">
+                                <div class="vehicle-name strong"><strong># <span ng-bind="itech.breakdownReport.field.vehicleName"></span></strong></div>
+                                <div class="company-name" ng-bind="itech.breakdownReport.field.companyName"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputBreakdownType" class="col-sm-4 control-label">Type of Breakdown *</label>
+                                <div class="col-sm-8">
+                                    <select id="inputBreakdownType" class="itech-selection" ng-model="itech.addUserForm.field.breakdownType">
+                                        <option class="text-capitalize"
+                                                ng-repeat="type in itech.breakdownTypes"
+                                                ng-bind="type" 
+                                                ng-value="type">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputRemark" class="col-sm-4 control-label">Remarks</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputRemark" placeholder="Things to take note" ng-model="itech.breakdownReport.field.remark">
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-messages text-xs-center p-b-2" ng-show="itech.breakdownReport.messages.length">
+                            <div class="text-danger small" ng-repeat="msg in itech.breakdownReport.messages" ng-bind="msg.text"></div>
+                        </div>
+                        <div class="form-action text-xs-center">
+                            <button type="button" ng-click="itech.formSubmit(itech.breakdownReport);" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,5 +1,6 @@
 .page-home .home-content-item table .status-indicator {
-    padding: 0.3rem;    
+    padding: 0.3rem;
+    margin: 0.1rem;
 }
 
 .page-home .tab-selections .tab-select {
@@ -7,12 +8,14 @@
     padding: 0.75rem;
 }
 
-.page-home .tab-selections select#company-selection {
-    width: 150px;
-    padding: 0.25rem;
-    height: 1.9rem;
-}
-
 .page-home #itech-datepicker {
     width: 150px;
+}
+
+.page-home div.modal .vehicle-name {
+    font-size: 130%;
+    color: darkblue;
+}
+.page-home div.modal .company-name {
+    color: gray;
 }

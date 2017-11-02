@@ -43,12 +43,12 @@
                             <span ng-bind="itech.currentLanguage == 'en' ? 'Home' : 'Laman Utama'"></span>
                         </a>
                     </li>
-                    <li id="responsive-menu-item-vehicles" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
+                    <li id="responsive-menu-item-vehicles" ng-if="itech.data.user.user_level == '1'" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
                         <a ng-click="itech.showMenu = !itech.showMenu" ui-sref="vehicles" class="responsive-menu-item-link">
                             <span ng-bind="itech.currentLanguage == 'en' ? 'Vehicles' : 'Kenderaan'"></span>
                         </a>
                     </li>
-                    <li id="responsive-menu-item-users" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
+                    <li id="responsive-menu-item-users" ng-if="itech.data.user.user_level == '1'" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
                         <a ng-click="itech.showMenu = !itech.showMenu" ui-sref="users" class="responsive-menu-item-link">
                             <span ng-bind="itech.currentLanguage == 'en' ? 'Users' : 'Pengunna'"></span>
                         </a>
@@ -97,10 +97,10 @@
                                 <li ui-sref-active="active" class="header-menu menu-item-home"><a title="Home" ui-sref="home">
                                     <span ng-bind="itech.currentLanguage == 'en' ? 'Home' : 'Laman Utama'"></span>
                                 </a></li>
-                                <li ui-sref-active="active" class="header-menu menu-item-vehicles"><a title="Vehicles" ui-sref="vehicles">
+                                <li ui-sref-active="active" ng-if="itech.data.user.user_level == '1'" class="header-menu menu-item-vehicles"><a title="Vehicles" ui-sref="vehicles">
                                     <span ng-bind="itech.currentLanguage == 'en' ? 'Vehicles' : 'Kenderaan'"></span>
                                 </a></li>
-                                <li ui-sref-active="active" class="header-menu menu-item-users"><a title="Users" ui-sref="users">
+                                <li ui-sref-active="active" ng-if="itech.data.user.user_level == '1'" class="header-menu menu-item-users"><a title="Users" ui-sref="users">
                                     <span ng-bind="itech.currentLanguage == 'en' ? 'Users' : 'Pengguna'"></span>
                                 </a></li>
                                 <li ui-sref-active="active" class="header-menu menu-item-login"><a title="Login or Logou" ui-sref="login">
@@ -112,12 +112,12 @@
                 </div>
             </div>
         </div>
-        <div class="site-content">
+        <div class="site-content m-b-3">
             <h1 class="page-title container text-xs-center text-uppercase" ng-bind="itech.pageTitle"></h1>
             <section class="_main-ui-view _content p-t-1" ui-view autoscroll="false"></section>
         </div>
 
-        <div class="site-footer p-y-1">
+        <div class="site-footer flaot-bottom p-y-1">
             <div class="container">
                 <div class="row">                                          
                     <div class="footer-copyright col-xs-12 col-md-4 text-xs-center text-lg-left hidden-xs-up">

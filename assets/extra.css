@@ -55,6 +55,22 @@ table.table.table-hover tbody tr:hover {
 }
 
 .itech-table {
-  color: darkblue;
-  font-weight: 900;
+    color: darkblue;
+    font-weight: 900;
+}
+
+.itech-selection {
+    width: 150px;
+    padding: 0.25rem;
+    height: 1.9rem;
+}
+
+.checklist-item .checklist-input,
+.checklist-item .checklist-label {
+    padding: 3px;
+    cursor: pointer;
+}
+
+.checklist-item .checklist-label:hover {
+    font-weight: bolder;
 }

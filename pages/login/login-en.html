@@ -1,5 +1,6 @@
 <div class="page-login page-login-en">
     <div class="container">
+        <hr class="m-t-0 m-b-3">
         <div class="card p-a-2" ng-if="!itech.token" style="max-width: 400px; margin: auto; margin-bottom: 5rem;">
             <form id="login-form" ng-submit="itech.loginSubmit();">
                 <div class="card-title text-xs-center" id="div-login-msg">
@@ -12,14 +13,14 @@
                         class="form-control m-b-1" 
                         type="text" 
                         placeholder="Username" 
-                        ng-model="itech.loginUsername"
+                        ng-model="itech.loginForm.username"
                         required>
                     <input 
                         id="login_password" 
                         class="form-control m-b-1" 
                         type="password" 
                         placeholder="Password" 
-                        ng-model="itech.loginPassword"
+                        ng-model="itech.loginForm.password"
                         required>
                 </div>
                 <div class="p-b-1">
