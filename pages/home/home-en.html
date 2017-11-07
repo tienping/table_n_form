@@ -22,13 +22,13 @@
             <div class="home-content-item" ng-repeat="item in itech.homeSelections" ng-show="itech.tabSelected.key == item.key">
                 <section class="item-listing" ng-if="item.type == 'list'">
                     <div ng-show="itech.data.vehicle.length">
-                        <table id="table-{{ item.key }}" class="itech-table table table-striped table-bordered table-hover">
+                        <table id="table-{{ item.key }}" class="itech-table table table-responsive table-striped table-bordered table-hover">
                             <thead class="thead bg-primary">
                                 <tr>
-                                    <th>Name</th>
-                                    <th width="150px">Distance</th>
-                                    <th width="150px">Time</th>
-                                    <th width="150px">Status</th>
+                                    <th width="250px">Name</th>
+                                    <th width="130px">Distance</th>
+                                    <th width="130px">Time</th>
+                                    <th width="130px">Status</th>
                                     <th width="200px">Action</th>
                                 </tr>
                             </thead>
@@ -83,7 +83,7 @@
                                 </button>
                             </div>
                         </div>
-                        <table id="table-{{ item.key }}" class="itech-table table table-striped table-bordered table-hover">
+                        <table id="table-{{ item.key }}" class="itech-table table table-responsive table-striped table-bordered table-hover">
                             <thead class="thead bg-success">
                                 <tr>
                                     <th>Name</th>
