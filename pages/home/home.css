@@ -1,0 +1,28 @@
+@media (min-width: 768px) {
+    .page-home .home-content-item table.table-responsive {
+        width: max-content;
+        margin: auto;
+    }
+}
+
+.page-home .home-content-item table .status-indicator {
+    padding: 0.3rem;
+    margin: 0.1rem;
+}
+
+.page-home .tab-selections .tab-select {
+    display: inline-block;
+    padding: 0.75rem;
+}
+
+.page-home #tienping-datepicker {
+    width: 150px;
+}
+
+.page-home div.modal .vehicle-name {
+    font-size: 130%;
+    color: darkblue;
+}
+.page-home div.modal .company-name {
+    color: gray;
+}

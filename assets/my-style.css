@@ -276,6 +276,13 @@ textarea {
     border-top: 2px solid blue;
 }
 
+.site-footer.flaot-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
 /* footer */
 /*.site-footer {
     position: fixed;
