@@ -1,0 +1,18 @@
+.page-users .user-list {
+    width: 70%;
+    min-width: 700px;
+    margin: auto;
+}
+
+.page-users .user-list .user-item {
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 2px 3px 10px 0px RGBA(0, 0, 0, 0.2);
+}
+.page-users .user-list .user-item:hover {
+    background-color: #FEFEFE;
+}
+
+.page-users .user-list .user-name {
+    font-size: 150%;
+}

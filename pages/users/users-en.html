@@ -1,0 +1,82 @@
+<div class="page-users page-users-en english" ng-init="itech.getUserList();"  ng-if="itech.data.user.user_level == '1'">
+    <section class="container">
+        <hr class="m-t-0">
+        <div class="user-list">
+            <div class="text-xs-right m-b-2">
+                <button class="btn btn-success btn-sm"
+                        ng-click="itech.addUserForm.param = 'create'; itech.addUserForm.field = {}; itech.openModal('user-form'); itech.addUserForm.title = 'Add User'">
+                    <i class="fa fa-plus"></i>
+                    <span>Add New</span>
+                </button>
+            </div>
+            <div class="itech-table user-item p-y-1" ng-repeat="user in itech.data.userlist">
+                <div class="row">
+                    <div class="col-xs-9">
+                        <div class="user-name">
+                            <i class="fa fa-user"></i>
+                            <span ng-bind="user.username"></span>
+                        </div>    
+                    </div>
+                    <div class="col-xs-3 text-xs-right">
+                        <button class="action-edit btn btn-info btn-sm"
+                                ng-click="itech.addUserForm.param = 'update'; itech.addUserForm.field = {}; itech.addUserForm.field.username = user.username; itech.openModal('user-form'); itech.addUserForm.title = 'Edit User'">
+                            <i class="fa fa-pencil"></i>
+                            Edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="user-form" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.addUserForm.title"></h3>
+                </div>
+                <div class="modal-body text-xs-center">  
+                    <form class="form-horizontal text-xs-left" name="itech.addUser">
+                        <div class="m-t-1 m-b-2">
+                            <div class="form-group row">
+                                <label for="inputUsername" class="col-sm-4 control-label">Username *</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputUsername" placeholder="Username for new user" ng-model="itech.addUserForm.field.username">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label for="inputUserPassword" class="col-sm-4 control-label">Password</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputUserPassword" placeholder="Password for new user" ng-model="itech.addUserForm.field.password">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputUserLevel" class="col-sm-4 control-label">User Level *</label>
+                                <div class="col-sm-8">
+                                    <select id="inputUserLevel" class="itech-selection" ng-model="itech.addUserForm.field.userLevel">
+                                        <option class="text-capitalize"
+                                                ng-repeat="level in ['manager', 'technician', 'guest']"
+                                                ng-bind="level" 
+                                                ng-value="level">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-messages text-xs-center p-b-2" ng-show="itech.addUserForm.messages.length">
+                            <div class="text-danger small" ng-repeat="msg in itech.addUserForm.messages" ng-bind="msg.text"></div>
+                        </div>
+                        <div class="form-action text-xs-center">
+                            <button type="button" ng-click="itech.formSubmit(itech.addUserForm);" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
