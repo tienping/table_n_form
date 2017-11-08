@@ -1,12 +1,12 @@
 (function() {
     'use strict';
     angular
-        .module('itech.main', ['ui.router', 'rzModule'])
-        .config(itechConfig);
+        .module('tienping.main', ['ui.router', 'rzModule'])
+        .config(tienpingConfig);
 
-    itechConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$httpProvider'];
+    tienpingConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$httpProvider'];
 
-    function itechConfig($stateProvider, $urlRouterProvider, $httpProvider) {
+    function tienpingConfig($stateProvider, $urlRouterProvider, $httpProvider) {
         var token = getCookie(TOKEN_KEY);
         if (token) {
             $httpProvider.defaults.headers.common['Authorization'] = 'Bearer ' + token;

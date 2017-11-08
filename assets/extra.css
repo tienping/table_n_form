@@ -54,12 +54,12 @@ table.table.table-hover tbody tr:hover {
     background-color: lightblue;
 }
 
-.itech-table {
+.tienping-table {
     color: darkblue;
     font-weight: 900;
 }
 
-.itech-selection {
+.tienping-selection {
     width: 150px;
     padding: 0.25rem;
     height: 1.9rem;

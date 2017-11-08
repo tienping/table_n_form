@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>ITech</title>
+        <title>MY APP</title>
 
         <link  href="lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
         <link  href="lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -26,36 +26,36 @@
         <link rel="stylesheet" href="lib/fonts-googleapis-comfortaa-400-700-v4-7-3.css" type="text/css">
         <link rel="stylesheet" href="lib/fonts-googleapis-comfortaa-700.css" type="text/css">
     </head>
-    <body ng-app="itechApp" ng-controller="itechCtrl as itech" ng-init="itech.init();">
+    <body ng-app="tienpingApp" ng-controller="tienpingCtrl as tienping" ng-init="tienping.init();">
         <button id="responsive-menu-button"
                 class="responsive-menu-button responsive-menu-accessible responsive-menu-boring" 
                 type="button" aria-label="Menu"
-                ng-click="itech.showMenu = !itech.showMenu"
-                ng-class="{ 'is-active': itech.showMenu }">
+                ng-click="tienping.showMenu = !tienping.showMenu"
+                ng-class="{ 'is-active': tienping.showMenu }">
             <span class="responsive-menu-box"><span class="responsive-menu-inner"></span></span>
         </button>
         <div id="responsive-menu-container" class="slide-left"
-             ng-class="{ 'slide-left': !itech.showMenu }">
+             ng-class="{ 'slide-left': !tienping.showMenu }">
             <div id="responsive-menu-wrapper" class="p-a-3">
                 <ul id="responsive-menu" class="">
                     <li id="responsive-menu-item-home" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
-                        <a ng-click="itech.showMenu = !itech.showMenu" ui-sref="home" class="responsive-menu-item-link">
-                            <span ng-bind="itech.currentLanguage == 'en' ? 'Home' : 'Laman Utama'"></span>
+                        <a ng-click="tienping.showMenu = !tienping.showMenu" ui-sref="home" class="responsive-menu-item-link">
+                            <span ng-bind="tienping.currentLanguage == 'en' ? 'Home' : 'Laman Utama'"></span>
                         </a>
                     </li>
-                    <li id="responsive-menu-item-vehicles" ng-if="itech.data.user.user_level == '1'" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
-                        <a ng-click="itech.showMenu = !itech.showMenu" ui-sref="vehicles" class="responsive-menu-item-link">
-                            <span ng-bind="itech.currentLanguage == 'en' ? 'Vehicles' : 'Kenderaan'"></span>
+                    <li id="responsive-menu-item-vehicles" ng-if="tienping.data.user.user_level == '1'" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
+                        <a ng-click="tienping.showMenu = !tienping.showMenu" ui-sref="vehicles" class="responsive-menu-item-link">
+                            <span ng-bind="tienping.currentLanguage == 'en' ? 'Vehicles' : 'Kenderaan'"></span>
                         </a>
                     </li>
-                    <li id="responsive-menu-item-users" ng-if="itech.data.user.user_level == '1'" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
-                        <a ng-click="itech.showMenu = !itech.showMenu" ui-sref="users" class="responsive-menu-item-link">
-                            <span ng-bind="itech.currentLanguage == 'en' ? 'Users' : 'Pengunna'"></span>
+                    <li id="responsive-menu-item-users" ng-if="tienping.data.user.user_level == '1'" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
+                        <a ng-click="tienping.showMenu = !tienping.showMenu" ui-sref="users" class="responsive-menu-item-link">
+                            <span ng-bind="tienping.currentLanguage == 'en' ? 'Users' : 'Pengunna'"></span>
                         </a>
                     </li>
                     <li id="responsive-menu-item-login" class="responsive-menu-item" ui-sref-active="responsive-menu-current-item">
-                        <a ng-click="itech.showMenu = !itech.showMenu" ui-sref="login" class="responsive-menu-item-link">
-                            <span ng-bind="itech.token ? 'Logout' : 'Login'"></span>
+                        <a ng-click="tienping.showMenu = !tienping.showMenu" ui-sref="login" class="responsive-menu-item-link">
+                            <span ng-bind="tienping.token ? 'Logout' : 'Login'"></span>
                         </a>
                     </li>
                 </ul>
@@ -70,11 +70,11 @@
                             <div class="translation-select-div">
                                 <div class="dropdown">
                                     <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="translation-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span ng-bind="itech.currentLanguage == 'en' ? 'English' : 'Bahasa Melayu';"></span>
+                                        <span ng-bind="tienping.currentLanguage == 'en' ? 'English' : 'Bahasa Melayu';"></span>
                                     </button> -->
                                     <!-- <div class="dropdown-menu" aria-labelledby="translation-dropdown">
-                                        <a ng-if="itech.currentLanguage == 'en'" ng-click="itech.toggleLanguage('bm');" class="dropdown-item">Bahasa Melayu</a>
-                                        <a ng-if="itech.currentLanguage == 'bm'" ng-click="itech.toggleLanguage('en');" class="dropdown-item">English</a>
+                                        <a ng-if="tienping.currentLanguage == 'en'" ng-click="tienping.toggleLanguage('bm');" class="dropdown-item">Bahasa Melayu</a>
+                                        <a ng-if="tienping.currentLanguage == 'bm'" ng-click="tienping.toggleLanguage('en');" class="dropdown-item">English</a>
                                     </div> -->
                                 </div>
                             </div>
@@ -88,23 +88,23 @@
                 <div class="row">
                     <div id="logo" class="col-xs-12 col-md-4 text-xs-center">
                         <a href="/">
-                            <img src="images/itech-logo-small.png" width="170" alt="logo">
+                            <img src="images/TP2.jpg" width="50" alt="logo">
                         </a>
                     </div>
                     <div class="navigation-menu col-sm-8 hidden-sm-down">
                         <nav class="navbar-collapse collapse navbar-ex1-collapse">
                             <ul id="menu-main-menu" class="nav navbar-nav">
                                 <li ui-sref-active="active" class="header-menu menu-item-home"><a title="Home" ui-sref="home">
-                                    <span ng-bind="itech.currentLanguage == 'en' ? 'Home' : 'Laman Utama'"></span>
+                                    <span ng-bind="tienping.currentLanguage == 'en' ? 'Home' : 'Laman Utama'"></span>
                                 </a></li>
-                                <li ui-sref-active="active" ng-if="itech.data.user.user_level == '1'" class="header-menu menu-item-vehicles"><a title="Vehicles" ui-sref="vehicles">
-                                    <span ng-bind="itech.currentLanguage == 'en' ? 'Vehicles' : 'Kenderaan'"></span>
+                                <li ui-sref-active="active" ng-if="tienping.data.user.user_level == '1'" class="header-menu menu-item-vehicles"><a title="Vehicles" ui-sref="vehicles">
+                                    <span ng-bind="tienping.currentLanguage == 'en' ? 'Vehicles' : 'Kenderaan'"></span>
                                 </a></li>
-                                <li ui-sref-active="active" ng-if="itech.data.user.user_level == '1'" class="header-menu menu-item-users"><a title="Users" ui-sref="users">
-                                    <span ng-bind="itech.currentLanguage == 'en' ? 'Users' : 'Pengguna'"></span>
+                                <li ui-sref-active="active" ng-if="tienping.data.user.user_level == '1'" class="header-menu menu-item-users"><a title="Users" ui-sref="users">
+                                    <span ng-bind="tienping.currentLanguage == 'en' ? 'Users' : 'Pengguna'"></span>
                                 </a></li>
                                 <li ui-sref-active="active" class="header-menu menu-item-login"><a title="Login or Logou" ui-sref="login">
-                                    <span ng-bind="itech.token ? 'Logout' : 'Login'"></span>
+                                    <span ng-bind="tienping.token ? 'Logout' : 'Login'"></span>
                                 </a></li>
                             </ul>
                         </nav>
@@ -113,7 +113,7 @@
             </div>
         </div>
         <div class="site-content m-b-3">
-            <h1 class="page-title container text-xs-center text-uppercase" ng-bind="itech.pageTitle"></h1>
+            <h1 class="page-title container text-xs-center text-uppercase" ng-bind="tienping.pageTitle"></h1>
             <section class="_main-ui-view _content p-t-1" ui-view autoscroll="false"></section>
         </div>
 
@@ -121,10 +121,10 @@
             <div class="container">
                 <div class="row">                                          
                     <div class="footer-copyright col-xs-12 col-md-4 text-xs-center text-lg-left hidden-xs-up">
-                        <div ng-if="itech.currentLanguage == 'en'">
+                        <div ng-if="tienping.currentLanguage == 'en'">
 
                         </div>
-                        <div ng-if="itech.currentLanguage == 'bm'">
+                        <div ng-if="tienping.currentLanguage == 'bm'">
                             
                         </div>
                     </div>
@@ -175,9 +175,9 @@
         <script src="assets/config-local.js"></script>
 
         <script src="assets/app.js"></script>
-        <script src="assets/app/itech.js"></script>
-        <script src="assets/app/itech.factory.js"></script>
-        <script src="assets/app/itech.resources.js"></script>
-        <script src="assets/app/itech.controller.js"></script>
+        <script src="assets/app/tienping.js"></script>
+        <script src="assets/app/tienping.factory.js"></script>
+        <script src="assets/app/tienping.resources.js"></script>
+        <script src="assets/app/tienping.controller.js"></script>
     </body>
 </html>

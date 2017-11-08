@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('itech.resources', ['ngResource'])
+        .module('tienping.resources', ['ngResource'])
         .factory('userRs', userRs)
         .factory('vehicleRs', vehicleRs)
         .factory('reportRs', reportRs);

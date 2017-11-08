@@ -2,36 +2,36 @@
     'use strict';
 
     angular
-        .module('itech.controller',[])
-        .controller('itechCtrl', itechCtrl)
+        .module('tienping.controller',[])
+        .controller('tienpingCtrl', tienpingCtrl)
         .filter('toHourMinute', toHourMinute);
 
-    itechCtrl.$inject = ['$scope', '$rootScope', '$state', 'userRs', 'vehicleRs', 'reportRs', 'Excel', '$timeout', '$location'];
-    function itechCtrl($scope, $rootScope, $state, userRs, vehicleRs, reportRs, Excel, $timeout, $location) {
-        var itech = this;
+    tienpingCtrl.$inject = ['$scope', '$rootScope', '$state', 'userRs', 'vehicleRs', 'reportRs', 'Excel', '$timeout', '$location'];
+    function tienpingCtrl($scope, $rootScope, $state, userRs, vehicleRs, reportRs, Excel, $timeout, $location) {
+        var tienping = this;
         
-        itech.init           = init;
-        itech.getUserList    = getUserList;
-        itech.openModal      = openModal;
-        itech.closeModal      = closeModal;
-        itech.toggleLanguage = toggleLanguage;
-        itech.loginSubmit    = loginSubmit;
-        itech.logoutSubmit   = logoutSubmit;
-        itech.changeTab      = changeTab;
-        itech.exportToExcel  = exportToExcel;
-        itech.formSubmit     = formSubmit;
+        tienping.init           = init;
+        tienping.getUserList    = getUserList;
+        tienping.openModal      = openModal;
+        tienping.closeModal      = closeModal;
+        tienping.toggleLanguage = toggleLanguage;
+        tienping.loginSubmit    = loginSubmit;
+        tienping.logoutSubmit   = logoutSubmit;
+        tienping.changeTab      = changeTab;
+        tienping.exportToExcel  = exportToExcel;
+        tienping.formSubmit     = formSubmit;
 
-        itech.token           = getCookie(TOKEN_KEY);
-        itech.currentLanguage = getCookie('tp-lang') || 'en';
+        tienping.token           = getCookie(TOKEN_KEY);
+        tienping.currentLanguage = getCookie('tp-lang') || 'en';
 
-        itech.data = {
+        tienping.data = {
             user: null,
             vehicle: null
         }
-        var localUserdata = getCookie("ITECHERO");
-        if (localUserdata) { itech.data.user = JSON.parse(localUserdata); }
+        var localUserdata = getCookie("MYUSER");
+        if (localUserdata) { tienping.data.user = JSON.parse(localUserdata); }
 
-        itech.homeSelections  = [
+        tienping.homeSelections  = [
             {
                 label: 'Action',
                 key: 'action',
@@ -42,9 +42,9 @@
                 type: 'report'
             }
         ];
-        itech.tabSelected = itech.homeSelections[0];
+        tienping.tabSelected = tienping.homeSelections[0];
 
-        itech.vehicleParts = [
+        tienping.vehicleParts = [
             {
                 label: 'Engine Oil'
             },
@@ -83,7 +83,7 @@
             }
         ];
 
-        itech.companies = [
+        tienping.companies = [
             {
                 label: 'AA RAMP'
             }, {
@@ -106,7 +106,7 @@
                 label: 'VISION V.R.'
             }
         ];
-        itech.breakdownTypes = [
+        tienping.breakdownTypes = [
             'engine',
             'transmission gear box',
             'front axle',
@@ -119,7 +119,7 @@
             'other'
         ];
 
-        itech.loginForm = {
+        tienping.loginForm = {
             id: 'login',
             messages: [],
             title: 'Login',
@@ -127,7 +127,7 @@
             password: ''
         }
 
-        itech.addVehicleForm = {
+        tienping.addVehicleForm = {
             id: 'vehicle-form',
             messages: [],
             title: 'Vehicle',
@@ -137,7 +137,7 @@
                 mab_expired: ''
             }
         };
-        itech.addUserForm = {
+        tienping.addUserForm = {
             id: 'user-form',
             messages: [],
             title: 'User',
@@ -147,7 +147,7 @@
                 userLevel: ''
             }
         };
-        itech.dailyReport = {
+        tienping.dailyReport = {
             id: 'daily-report-form',
             messages: [],
             title: 'Daily Report',
@@ -159,7 +159,7 @@
                 checklist: {}
             }
         };
-        itech.breakdownReport = {
+        tienping.breakdownReport = {
             id: 'daily-report-form',
             messages: [],
             title: 'Daily Report',
@@ -173,13 +173,13 @@
         };
 
         $rootScope.$on('$stateChangeSuccess', function() {
-            if (!itech.token && $state.current.name !== 'login') {
+            if (!tienping.token && $state.current.name !== 'login') {
                 $state.go('login');
-                itech.openModal('login-notification');
+                tienping.openModal('login-notification');
             } else {
-                itech.pageTitle= $state.current.name;
-                if (itech.pageTitle === 'login') {
-                    itech.pageTitle = itech.token ? 'Logout' : 'Login';
+                tienping.pageTitle= $state.current.name;
+                if (tienping.pageTitle === 'login') {
+                    tienping.pageTitle = tienping.token ? 'Logout' : 'Login';
                 }
             }
         });
@@ -188,12 +188,12 @@
             var offsetValue = 50;
             initializeSmoothScroll(offsetValue);
 
-            if (!itech.data.vehicle) {
+            if (!tienping.data.vehicle) {
                 // vehicleRs.save({
                 funCall({
                     param: 'list'
                 }, function successCallback(response) {
-                    itech.data.vehicle = response.vehicles;
+                    tienping.data.vehicle = response.vehicles;
                 }, function failureCallback(response) {
                     
                 }, 'vehicleRs.save');
@@ -201,12 +201,12 @@
         }
 
         function getUserList() {
-            if (!itech.data.userlist) {
+            if (!tienping.data.userlist) {
                 // vehicleRs.save({
                 funCall({
                     param: 'list'
                 }, function successCallback(response) {
-                    itech.data.userlist = response.users;
+                    tienping.data.userlist = response.users;
                 }, function failureCallback(response) {
                     
                 }, 'userListRs.save');
@@ -229,13 +229,13 @@
             funCall({
             // userRs.save({
                 param: 'login',
-                username: itech.loginForm.username,
-                password: itech.loginForm.password
+                username: tienping.loginForm.username,
+                password: tienping.loginForm.password
             }, function successCallback(response) {
                 setCookie(TOKEN_KEY, response.token, 3);
-                setCookie("ITECHERO", JSON.stringify(response.user), 3);
-                itech.token = response.token;
-                itech.data.user = response.user;
+                setCookie("MYUSER", JSON.stringify(response.user), 3);
+                tienping.token = response.token;
+                tienping.data.user = response.user;
                 $location.path('/home');
                 window.location.reload();
             }, function failureCallback(response) {
@@ -246,8 +246,8 @@
         function logoutSubmit() {
             var tokenString = 'login-cookie-token-string';
             setCookie(TOKEN_KEY, '', 0);
-            setCookie("ITECHERO", '', 0);
-            itech.token = null;
+            setCookie("MYUSER", '', 0);
+            tienping.token = null;
             location.reload();
         }
 
@@ -255,7 +255,7 @@
             if (key == 'report') {
                 var FromEndDate = new Date();
                 
-                $('#itech-datepicker').datepicker({
+                $('#tienping-datepicker').datepicker({
                     autoclose: true,
                     minViewMode: 1,
                     startDate: '06/2017',
@@ -297,8 +297,8 @@
             // vehicleRs.post({
             funCall(data.field, function successCallback(response) {
                 if (response.status == 'SUCCESS') {
-                    itech.data.vehicle.push(response.vehicle);
-                    itech.closeModal('add-' + key);
+                    tienping.data.vehicle.push(response.vehicle);
+                    tienping.closeModal('add-' + key);
                 }
             }, function failureCallback(response) {
                 alert('Form submit fail...', response);

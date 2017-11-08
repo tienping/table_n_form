@@ -2,27 +2,27 @@
     <section class="container">
         <hr class="m-y-0">
         <div class="tab-selections">
-            <div ng-repeat="tab in itech.homeSelections"
+            <div ng-repeat="tab in tienping.homeSelections"
                  class="menu-item tab-select text-xs-center">
                 <button class="btn p-x-2"
                         ng-bind="tab.label" 
-                        ng-click="itech.tabSelected = tab; itech.changeTab(tab.key);" 
-                        ng-class="itech.tabSelected == tab ? 'active btn-primary' : 'btn-info btn-sm'">
+                        ng-click="tienping.tabSelected = tab; tienping.changeTab(tab.key);" 
+                        ng-class="tienping.tabSelected == tab ? 'active btn-primary' : 'btn-info btn-sm'">
                 </button>
             </div>
             <div class="tab-select pull-right">
                 <span>Company: </span>
-                <select id="company-selection" class="itech-selection">
-                    <option ng-repeat="company in itech.companies" ng-bind="company.label" ng-value="company.label"></option>
+                <select id="company-selection" class="tienping-selection">
+                    <option ng-repeat="company in tienping.companies" ng-bind="company.label" ng-value="company.label"></option>
                 </select>
             </div>
         </div>
         <hr class="m-t-0">
         <div class="home-content">
-            <div class="home-content-item" ng-repeat="item in itech.homeSelections" ng-show="itech.tabSelected.key == item.key">
+            <div class="home-content-item" ng-repeat="item in tienping.homeSelections" ng-show="tienping.tabSelected.key == item.key">
                 <section class="item-listing" ng-if="item.type == 'list'">
-                    <div ng-show="itech.data.vehicle.length">
-                        <table id="table-{{ item.key }}" class="itech-table table table-responsive table-striped table-bordered table-hover">
+                    <div ng-show="tienping.data.vehicle.length">
+                        <table id="table-{{ item.key }}" class="tienping-table table table-responsive table-striped table-bordered table-hover">
                             <thead class="thead bg-primary">
                                 <tr>
                                     <th width="250px">Name</th>
@@ -33,7 +33,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="vehicle in itech.data.vehicle">
+                                <tr ng-repeat="vehicle in tienping.data.vehicle">
                                     <td class="vehicle-name"><i class="fa fa-car"></i> {{ vehicle.name }}</td>
                                     <td>{{ vehicle.last_check.distance }} KM</td>
                                     <td>{{ vehicle.last_check.time | toHourMinute }}</td>
@@ -49,15 +49,15 @@
                                     </td>
                                     <td>
                                         <button class="cta-daily btn btn-secondary btn-sm btn-block" 
-                                                ng-click="itech.openModal('daily-report-form');
-                                                    itech.dailyReport.field.vehicleName = vehicle.name;
-                                                    itech.dailyReport.field.companyName = vehicle.companies_list.name;">
+                                                ng-click="tienping.openModal('daily-report-form');
+                                                    tienping.dailyReport.field.vehicleName = vehicle.name;
+                                                    tienping.dailyReport.field.companyName = vehicle.companies_list.name;">
                                             Perform Daily Check
                                         </button>
                                         <button class="cta-breakdown btn btn-secondary btn-sm btn-block"
-                                                ng-click="itech.openModal('breakdown-report-form');
-                                                    itech.breakdownReport.field.vehicleName = vehicle.name;
-                                                    itech.breakdownReport.field.companyName = vehicle.companies_list.name;">
+                                                ng-click="tienping.openModal('breakdown-report-form');
+                                                    tienping.breakdownReport.field.vehicleName = vehicle.name;
+                                                    tienping.breakdownReport.field.companyName = vehicle.companies_list.name;">
                                             Report Breakdown
                                         </button>
                                     </td>
@@ -65,25 +65,25 @@
                             </tbody>
                         </table>
                     </div>
-                    <div ng-hide="itech.data.vehicle.length">
+                    <div ng-hide="tienping.data.vehicle.length">
                         Loading...
                     </div>
                 </section>
                 <section class="item-report" ng-if="item.type == 'report'">
-                    <div ng-show="itech.data.vehicle.length">
+                    <div ng-show="tienping.data.vehicle.length">
                         <div class="row cta-div p-b-1 p-r-1">
                             <div class="col-xs-6">
                                 <span class="filter-text pull-left" style="padding: .25rem .75rem;">Filter: </span>
-                                <input id="itech-datepicker" type="text" class="form-control form-control-2 input-sm" placeholder="Select date">
+                                <input id="tienping-datepicker" type="text" class="form-control form-control-2 input-sm" placeholder="Select date">
                             </div>
                             <div class="col-xs-6">
                                 <button class="cta-buttun cta-download btn btn-secondary btn-sm pull-right"
-                                        ng-click="itech.exportToExcel('#table-' + item.key, item.label);">
+                                        ng-click="tienping.exportToExcel('#table-' + item.key, item.label);">
                                     Download
                                 </button>
                             </div>
                         </div>
-                        <table id="table-{{ item.key }}" class="itech-table table table-responsive table-striped table-bordered table-hover">
+                        <table id="table-{{ item.key }}" class="tienping-table table table-responsive table-striped table-bordered table-hover">
                             <thead class="thead bg-success">
                                 <tr>
                                     <th>Name</th>
@@ -93,7 +93,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="vehicle in itech.data.vehicle">
+                                <tr ng-repeat="vehicle in tienping.data.vehicle">
                                     <td><i class="fa fa-car"></i> {{ vehicle.name }}</td>
                                     <td>{{ vehicle.num_of_uncheck }}</td>
                                     <td>{{ vehicle.num_of_breakdown }}</td>
@@ -102,7 +102,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div ng-hide="itech.data.vehicle.length">
+                    <div ng-hide="tienping.data.vehicle.length">
                         Loading...
                     </div>
                 </section>
@@ -118,50 +118,50 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.dailyReport.title"></h3>
+                    <h3 class="mlab-modal-title m-b-0" ng-bind="tienping.dailyReport.title"></h3>
                 </div>
                 <div class="modal-body text-xs-center">  
-                    <form class="form-horizontal text-xs-left" name="itech.addUser">
+                    <form class="form-horizontal text-xs-left" name="tienping.addUser">
                         <div class="m-t-1 m-b-2">
                             <div class="form-group">
-                                <div class="vehicle-name strong"><strong># <span ng-bind="itech.dailyReport.field.vehicleName"></span></strong></div>
-                                <div class="company-name" ng-bind="itech.dailyReport.field.companyName"></div>
+                                <div class="vehicle-name strong"><strong># <span ng-bind="tienping.dailyReport.field.vehicleName"></span></strong></div>
+                                <div class="company-name" ng-bind="tienping.dailyReport.field.companyName"></div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputDistance" class="col-sm-4 control-label">Distance *</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputDistance" placeholder="Distance travelled" ng-model="itech.dailyReport.field.distance">
+                                    <input type="text" class="form-control" id="inputDistance" placeholder="Distance travelled" ng-model="tienping.dailyReport.field.distance">
                                 </div>
                             </div>
                             
                             <div class="form-group row">
                                 <label for="inputTime" class="col-sm-4 control-label">Time</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputTime" placeholder="Time checked" ng-model="itech.dailyReport.field.time">
+                                    <input type="text" class="form-control" id="inputTime" placeholder="Time checked" ng-model="tienping.dailyReport.field.time">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputChecklist" class="col-sm-4 control-label">Checklist *</label>
                                 <div class="col-sm-8">
-                                    <div class="checklist-item" ng-repeat="item in itech.vehicleParts">
+                                    <div class="checklist-item" ng-repeat="item in tienping.vehicleParts">
                                         <input class="checklist-input"
                                                id=="'inputCheclist_' + {{ item.label }}"
                                                type="checkbox" 
-                                               ng-model="itech.dailyReport.field.checklist[item.label]">
+                                               ng-model="tienping.dailyReport.field.checklist[item.label]">
                                         <label class="checklist-label"
                                                for="'inputCheclist_' + {{ item.label }}"
                                                ng-bind="item.label"
-                                               ng-click="itech.dailyReport.field.checklist[item.label] = !itech.dailyReport.field.checklist[item.label]"></label>
+                                               ng-click="tienping.dailyReport.field.checklist[item.label] = !tienping.dailyReport.field.checklist[item.label]"></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <hr>
-                        <div class="form-messages text-xs-center p-b-2" ng-show="itech.dailyReport.messages.length">
-                            <div class="text-danger small" ng-repeat="msg in itech.dailyReport.messages" ng-bind="msg.text"></div>
+                        <div class="form-messages text-xs-center p-b-2" ng-show="tienping.dailyReport.messages.length">
+                            <div class="text-danger small" ng-repeat="msg in tienping.dailyReport.messages" ng-bind="msg.text"></div>
                         </div>
                         <div class="form-action text-xs-center">
-                            <button type="button" ng-click="itech.formSubmit(itech.dailyReport);" class="btn btn-primary">Submit</button>
+                            <button type="button" ng-click="tienping.formSubmit(tienping.dailyReport);" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -176,21 +176,21 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.breakdownReport.title"></h3>
+                    <h3 class="mlab-modal-title m-b-0" ng-bind="tienping.breakdownReport.title"></h3>
                 </div>
                 <div class="modal-body">  
-                    <form class="form-horizontal" name="itech.addUser">
+                    <form class="form-horizontal" name="tienping.addUser">
                         <div class="m-t-1 m-b-2">
                             <div class="form-group">
-                                <div class="vehicle-name strong"><strong># <span ng-bind="itech.breakdownReport.field.vehicleName"></span></strong></div>
-                                <div class="company-name" ng-bind="itech.breakdownReport.field.companyName"></div>
+                                <div class="vehicle-name strong"><strong># <span ng-bind="tienping.breakdownReport.field.vehicleName"></span></strong></div>
+                                <div class="company-name" ng-bind="tienping.breakdownReport.field.companyName"></div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputBreakdownType" class="col-sm-4 control-label">Type of Breakdown *</label>
                                 <div class="col-sm-8">
-                                    <select id="inputBreakdownType" class="itech-selection" ng-model="itech.addUserForm.field.breakdownType">
+                                    <select id="inputBreakdownType" class="tienping-selection" ng-model="tienping.addUserForm.field.breakdownType">
                                         <option class="text-capitalize"
-                                                ng-repeat="type in itech.breakdownTypes"
+                                                ng-repeat="type in tienping.breakdownTypes"
                                                 ng-bind="type" 
                                                 ng-value="type">
                                         </option>
@@ -200,16 +200,16 @@
                             <div class="form-group row">
                                 <label for="inputRemark" class="col-sm-4 control-label">Remarks</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputRemark" placeholder="Things to take note" ng-model="itech.breakdownReport.field.remark">
+                                    <input type="text" class="form-control" id="inputRemark" placeholder="Things to take note" ng-model="tienping.breakdownReport.field.remark">
                                 </div>
                             </div>
                         </div>
                         <hr>
-                        <div class="form-messages text-xs-center p-b-2" ng-show="itech.breakdownReport.messages.length">
-                            <div class="text-danger small" ng-repeat="msg in itech.breakdownReport.messages" ng-bind="msg.text"></div>
+                        <div class="form-messages text-xs-center p-b-2" ng-show="tienping.breakdownReport.messages.length">
+                            <div class="text-danger small" ng-repeat="msg in tienping.breakdownReport.messages" ng-bind="msg.text"></div>
                         </div>
                         <div class="form-action text-xs-center">
-                            <button type="button" ng-click="itech.formSubmit(itech.breakdownReport);" class="btn btn-primary">Submit</button>
+                            <button type="button" ng-click="tienping.formSubmit(tienping.breakdownReport);" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>

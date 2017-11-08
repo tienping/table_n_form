@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('itech.factory', ['ngResource'])
+        .module('tienping.factory', ['ngResource'])
         .factory('Excel', Excel);
 
     function Excel($window) {

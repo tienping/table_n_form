@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('itechApp', [
-    'itech.main',
-    'itech.factory',
-    'itech.resources',
-    'itech.controller'
+angular.module('tienpingApp', [
+    'tienping.main',
+    'tienping.factory',
+    'tienping.resources',
+    'tienping.controller'
 ]);
