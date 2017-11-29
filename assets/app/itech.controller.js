@@ -26,6 +26,7 @@
         itech.printTable     = printTable;
         itech.exportToExcel  = exportToExcel;
         itech.initDailyCheckForm   = initDailyCheckForm;
+        itech.dailyReportSubmit     = dailyReportSubmit;
         itech.formSubmit     = formSubmit;
 
         itech.token           = getCookie(TOKEN_KEY);
@@ -157,6 +158,7 @@
             id: 'login',
             messages: [],
             title: 'Login',
+            isBusy: false,
             username: '',
             password: ''
         }
@@ -165,6 +167,7 @@
             id: 'vehicle-form',
             messages: [],
             title: 'Vehicle',
+            isBusy: false,
             field: {
                 company: '',
                 name: '',
@@ -175,6 +178,7 @@
             id: 'user-form',
             messages: [],
             title: 'User',
+            isBusy: false,
             field: {
                 username: '',
                 password: '',
@@ -185,12 +189,14 @@
             id: 'daily-report-form',
             messages: [],
             title: 'Daily Report',
+            isBusy: false,
             field: {}
         };
         itech.breakdownReport = {
             id: 'breakdown-report-form',
             messages: [],
             title: 'Daily Report',
+            isBusy: false,
             field: {
                 vehicleName: '',
                 companyName: '',
@@ -341,6 +347,35 @@
 
             return fields;
         }
+
+        function dailyReportSubmit(data) {
+            data.messages = [];
+
+            if (data.isBusy) {
+                data.messages.push({text: 'Data processing, please wait.'});
+                return;
+            }
+            data.isBusy = true;
+            
+            if (!data.field.company_id) {
+                data.messages.push({text: 'Please set company.'});
+            }
+            if (!data.field.vehicle_id) {
+                data.messages.push({text: 'Please set vehicle.'});
+            }
+
+            if (data.messages.length) { return; }
+            
+            data.field.param = 'check-list';
+            vehicleRs.save(data.field, function successCallback(response) {
+                if (response.status == 'SUCCESS') {
+                    location.reload();
+                }
+            }, function failureCallback(response) {
+                alert('Form submit fail...', response);
+                data.isBusy = false;
+            });
+        }
         
         function formSubmit(data) {
             data.messages = [];
@@ -363,16 +398,13 @@
                 if (!data.field.userLevel) {
                     data.messages.push({text: 'Please assign user level.'})
                 }
-            } else if (data.id == 'daily-report-form') {
-                
-                // post to api: vehicle/check-list
             } else {
                 data.messages.push({text: 'Invalid data, please consult system administrator.'});
             }
 
             if (data.messages.length) { return; }
 
-            vehicleRs.post(data.field, function successCallback(response) {
+            vehicleRs.save(data.field, function successCallback(response) {
                 if (response.status == 'SUCCESS') {
                     itech.data.vehicle.push(response.vehicle);
                     itech.closeModal('add-' + key);

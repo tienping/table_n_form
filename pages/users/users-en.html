@@ -72,7 +72,13 @@
                             <div class="text-danger small" ng-repeat="msg in itech.addUserForm.messages" ng-bind="msg.text"></div>
                         </div>
                         <div class="form-action text-xs-center">
-                            <button type="button" ng-click="itech.formSubmit(itech.addUserForm);" class="btn btn-primary">Submit</button>
+                            <button type="button" ng-click="itech.formSubmit(itech.addUserForm);" class="btn btn-primary">
+                                Submit
+                                <img ng-if="itech.dailyReport.isBusy" 
+                                     src="images/loading.gif" 
+                                     width="28"
+                                     style="margin-left: 10px; margin-right: -10px;">
+                            </button>
                         </div>
                     </form>
                 </div>

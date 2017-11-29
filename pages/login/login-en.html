@@ -24,7 +24,13 @@
                         required>
                 </div>
                 <div class="p-b-1">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                        Login
+                        <img ng-if="itech.dailyReport.isBusy" 
+                             src="images/loading.gif" 
+                             width="28"
+                             style="margin-left: 10px; margin-right: -10px;">
+                    </button>
                 </div>
             </form>
         </div>
@@ -34,6 +40,10 @@
             <div class="p-x-2 p-b-1">
                 <button ng-click="itech.logoutSubmit();" class="btn btn-danger btn-lg btn-block">
                     Logout now
+                    <img ng-if="itech.dailyReport.isBusy" 
+                         src="images/loading.gif" 
+                         width="28"
+                         style="margin-left: 10px; margin-right: -10px;">
                 </button>
             </div>
             <button ui-sref="home" class="btn btn-primary btn-lg btn-block">Back to Home</button>
