@@ -241,11 +241,13 @@
                     itech.data.reportDate = {};
                     if (itech.selectedMonth){
                         dateArr = itech.selectedMonth.split('/');
-                        itech.data.reportDate.month = dateArr[0];
-                        itech.data.reportDate.year = dateArr[1];
+                        var monthValue = parseInt(dateArr[0]);
+                        var monthString = monthValue < 10 ? '0' + monthValue : '' + monthValue;
+                        itech.data.reportDate['year'] = dateArr[1];
+                        itech.data.reportDate['month'] = monthString;
                     }
-                    reportRs.save(itech.data.reportDate, {
-                    }, function successCallback(response) {
+
+                    reportRs.save(itech.data.reportDate, function successCallback(response) {
                         itech.data.reports = response.vehicles;
                     }, function failureCallback(response) {
                         alert('Reports request failed. Please consult system admin.', response);
