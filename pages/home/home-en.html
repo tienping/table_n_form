@@ -12,8 +12,10 @@
             </div>
             <div class="tab-select pull-right">
                 <span>Company: </span>
-                <select id="company-selection" class="itech-selection">
-                    <option ng-repeat="company in itech.companies" ng-bind="company.label" ng-value="company.label"></option>
+                <select id="company-selection" 
+                        class="itech-selection" 
+                        ng-options="company as company.label for company in itech.companies" 
+                        ng-model="itech.selectedCompany">
                 </select>
             </div>
         </div>
@@ -25,18 +27,18 @@
                         <table id="table-{{ item.key }}" class="itech-table table table-responsive table-striped table-bordered table-hover">
                             <thead class="thead bg-primary">
                                 <tr>
-                                    <th width="250px">Name</th>
-                                    <th width="130px">Distance</th>
-                                    <th width="130px">Time</th>
-                                    <th width="130px">Status</th>
-                                    <th width="200px">Action</th>
+                                    <th width="250">Name</th>
+                                    <th width="150">Distance</th>
+                                    <th width="150">Time</th>
+                                    <th width="150">Status</th>
+                                    <th width="200">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="vehicle in itech.data.vehicle">
+                                <tr ng-repeat="vehicle in itech.data.vehicle | companyFilter:itech.selectedCompany">
                                     <td class="vehicle-name"><i class="fa fa-car"></i> {{ vehicle.name }}</td>
                                     <td>{{ vehicle.last_check.distance }} KM</td>
-                                    <td>{{ vehicle.last_check.time | toHourMinute }}</td>
+                                    <td><span ng-if="vehicle.last_check.time" ng-bind="vehicle.last_check.time | toHourMinute"></span></td>
                                     <td class="status-indicator-div text-xs-center">
                                         <div class="status-indicator small"
                                               ng-bind="vehicle.today_checkin ? 'Check' : 'Uncheck'"
@@ -50,14 +52,12 @@
                                     <td>
                                         <button class="cta-daily btn btn-secondary btn-sm btn-block" 
                                                 ng-click="itech.openModal('daily-report-form');
-                                                    itech.dailyReport.field.vehicleName = vehicle.name;
-                                                    itech.dailyReport.field.companyName = vehicle.companies_list.name;">
+                                                    itech.dailyReport.field = itech.initDailyCheckForm(itech.dailyReport.field, vehicle.last_check);">
                                             Perform Daily Check
                                         </button>
                                         <button class="cta-breakdown btn btn-secondary btn-sm btn-block"
                                                 ng-click="itech.openModal('breakdown-report-form');
-                                                    itech.breakdownReport.field.vehicleName = vehicle.name;
-                                                    itech.breakdownReport.field.companyName = vehicle.companies_list.name;">
+                                                    itech.breakdownReport.field = vehicle.last_check;">
                                             Report Breakdown
                                         </button>
                                     </td>
@@ -69,40 +69,56 @@
                         Loading...
                     </div>
                 </section>
-                <section class="item-report" ng-if="item.type == 'report'">
-                    <div ng-show="itech.data.vehicle.length">
+                <section class="item-report" ng-if="item.type == 'report'" ng-init="itech.getReports();">
+                    <div ng-show="itech.data.reports.length">
                         <div class="row cta-div p-b-1 p-r-1">
                             <div class="col-xs-6">
                                 <span class="filter-text pull-left" style="padding: .25rem .75rem;">Filter: </span>
-                                <input id="itech-datepicker" type="text" class="form-control form-control-2 input-sm" placeholder="Select date">
+                                <input id="itech-datepicker" 
+                                       type="text" 
+                                       class="form-control form-control-2 input-sm" 
+                                       placeholder="Select date"
+                                       ng-model="itech.selectedMonth"
+                                       ng-change="itech.getReports('update');">
+                                <button class="cta-buttun cta-download btn btn-secondary btn-sm"
+                                        ng-click="itech.selectedMonth = ''">
+                                    Reset
+                                </button>
                             </div>
                             <div class="col-xs-6">
+                                <button class="cta-buttun cta-print btn btn-secondary btn-sm pull-right"
+                                        ng-click="itech.printTable('#table-' + item.key);">
+                                    Print
+                                </button>
                                 <button class="cta-buttun cta-download btn btn-secondary btn-sm pull-right"
                                         ng-click="itech.exportToExcel('#table-' + item.key, item.label);">
                                     Download
                                 </button>
                             </div>
                         </div>
-                        <table id="table-{{ item.key }}" class="itech-table table table-responsive table-striped table-bordered table-hover">
+                        <table id="table-{{ item.key }}" 
+                               class="itech-table table table-responsive table-striped table-bordered table-hover"
+                               border="1"
+                               style="border-collapse: collapse;">
                             <thead class="thead bg-success">
                                 <tr>
-                                    <th>Name</th>
-                                    <th width="200px">Number of Uncheck</th>
-                                    <th width="200px">Number of Breakdown</th>
-                                    <th width="200px">Last Breakdown</th>
+                                    <th width="250">Name</th>
+                                    <th width="200">Number of Uncheck</th>
+                                    <th width="200">Number of Breakdown</th>
+                                    <th width="200">Last Breakdown</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="vehicle in itech.data.vehicle">
+                                <tr ng-repeat="vehicle in itech.data.reports | companyFilter:itech.selectedCompany | monthFilter: itech.selectedMonth">
                                     <td><i class="fa fa-car"></i> {{ vehicle.name }}</td>
-                                    <td>{{ vehicle.num_of_uncheck }}</td>
-                                    <td>{{ vehicle.num_of_breakdown }}</td>
-                                    <td>{{ vehicle.last_breakdown }}</td>
+                                    <td class="text-xs-center">{{ vehicle.all_uncheck.length }}</td>
+                                    <td class="text-xs-center">{{ vehicle.all_breakdown.length }}</td>
+                                    <td>{{ vehicle.report && vehicle.report.last_breakdown }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div ng-hide="itech.data.vehicle.length">
+                    <div ng-hide="itech.data.reports.length">
                         Loading...
                     </div>
                 </section>
@@ -121,11 +137,11 @@
                     <h3 class="mlab-modal-title m-b-0" ng-bind="itech.dailyReport.title"></h3>
                 </div>
                 <div class="modal-body text-xs-center">  
-                    <form class="form-horizontal text-xs-left" name="itech.addUser">
+                    <form class="form-horizontal text-xs-left" name="itech.addDailyCheck" ng-submit="itech.addDailyCheck(itech.dailyReport.field);">
                         <div class="m-t-1 m-b-2">
                             <div class="form-group">
-                                <div class="vehicle-name strong"><strong># <span ng-bind="itech.dailyReport.field.vehicleName"></span></strong></div>
-                                <div class="company-name" ng-bind="itech.dailyReport.field.companyName"></div>
+                                <div class="vehicle-name strong"><strong># <span ng-bind="itech.dailyReport.field.vehicle_id | getVehicleName:itech.data.vehicle"></span></strong></div>
+                                <div class="company-name" ng-bind="itech.dailyReport.field.company_id | getCompanyName:itech.companies"></div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputDistance" class="col-sm-4 control-label">Distance *</label>
@@ -140,6 +156,7 @@
                                     <input type="text" class="form-control" id="inputTime" placeholder="Time checked" ng-model="itech.dailyReport.field.time">
                                 </div>
                             </div>
+                            
                             <div class="form-group row">
                                 <label for="inputChecklist" class="col-sm-4 control-label">Checklist *</label>
                                 <div class="col-sm-8">
@@ -147,11 +164,11 @@
                                         <input class="checklist-input"
                                                id=="'inputCheclist_' + {{ item.label }}"
                                                type="checkbox" 
-                                               ng-model="itech.dailyReport.field.checklist[item.label]">
+                                               ng-model="itech.dailyReport.field[item.key]">
                                         <label class="checklist-label"
                                                for="'inputCheclist_' + {{ item.label }}"
                                                ng-bind="item.label"
-                                               ng-click="itech.dailyReport.field.checklist[item.label] = !itech.dailyReport.field.checklist[item.label]"></label>
+                                               ng-click="itech.dailyReport.field[item.key] = !itech.dailyReport.field[item.key]"></label>
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +196,7 @@
                     <h3 class="mlab-modal-title m-b-0" ng-bind="itech.breakdownReport.title"></h3>
                 </div>
                 <div class="modal-body">  
-                    <form class="form-horizontal" name="itech.addUser">
+                    <form class="form-horizontal" name="itech.addBreakdown">
                         <div class="m-t-1 m-b-2">
                             <div class="form-group">
                                 <div class="vehicle-name strong"><strong># <span ng-bind="itech.breakdownReport.field.vehicleName"></span></strong></div>

@@ -33,8 +33,6 @@
     }
 
     function reportRs($resource) {
-        // REPORT_API = '/reports'
-
         return $resource(API_URL + '/reports');
     }
 })();

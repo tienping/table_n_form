@@ -4,21 +4,28 @@
     angular
         .module('itech.controller',[])
         .controller('itechCtrl', itechCtrl)
-        .filter('toHourMinute', toHourMinute);
+        .filter('toHourMinute', toHourMinute)
+        .filter('getVehicleName', getVehicleName)
+        .filter('getCompanyName', getCompanyName)
+        .filter('companyFilter', companyFilter)
+        .filter('monthFilter', monthFilter);
 
     itechCtrl.$inject = ['$scope', '$rootScope', '$state', 'userRs', 'vehicleRs', 'reportRs', 'Excel', '$timeout', '$location'];
     function itechCtrl($scope, $rootScope, $state, userRs, vehicleRs, reportRs, Excel, $timeout, $location) {
         var itech = this;
         
         itech.init           = init;
+        itech.getReports     = getReports;
         itech.getUserList    = getUserList;
         itech.openModal      = openModal;
-        itech.closeModal      = closeModal;
+        itech.closeModal     = closeModal;
         itech.toggleLanguage = toggleLanguage;
         itech.loginSubmit    = loginSubmit;
         itech.logoutSubmit   = logoutSubmit;
         itech.changeTab      = changeTab;
+        itech.printTable     = printTable;
         itech.exportToExcel  = exportToExcel;
+        itech.initDailyCheckForm   = initDailyCheckForm;
         itech.formSubmit     = formSubmit;
 
         itech.token           = getCookie(TOKEN_KEY);
@@ -46,66 +53,93 @@
 
         itech.vehicleParts = [
             {
-                label: 'Engine Oil'
+                label: 'Engine Oil',
+                key: 'engine_oil'
             },
             {
-                label: 'Tranmission Oil'
+                label: 'Tranmission Oil',
+                key: 'transmission_oil'
             },
             {
-                label: 'Brake Oil'
+                label: 'Brake Oil',
+                key: 'brake_oil'
             },
             {
-                label: 'Steering Oil'
+                label: 'Steering Oil',
+                key: 'steering_oil'
             },
             {
-                label: 'Radiator Water'
+                label: 'Radiator Water',
+                key: 'radiator_water'
             },
             {
-                label: 'Front & Rear Light'
+                label: 'Front & Rear Light',
+                key: 'front_n_rear_light'
             },
             {
-                label: 'Beacon Light'
+                label: 'Beacon Light',
+                key: 'beacon_light'
             },
             {
-                label: 'Brake Condition'
+                label: 'Brake Condition',
+                key: 'brake_condition'
             },
             {
-                label: 'Belting'
+                label: 'Belting',
+                key: 'belting'
             },
             {
-                label: 'Brake Light Left & Right'
+                label: 'Brake Light Left & Right',
+                key: 'brake_light_left_n_right'
             },
             {
-                label: 'Hand Brake'
+                label: 'Hand Brake',
+                key: 'hand_brake'
             },
             {
-                label: 'Seat Condition'
+                label: 'Seat Condition',
+                key: 'seat_condition'
             }
         ];
 
         itech.companies = [
             {
-                label: 'AA RAMP'
+                label: 'All Company',
+                key: null
             }, {
-                label: 'AA ENGINEERING'
+                label: 'AA RAMP',
+                key: '1'
             }, {
-                label: 'AAX ENGINEERING'
+                label: 'AA ENGINEERING',
+                key: '2'
             }, {
-                label: 'AAX RAMP'
+                label: 'AAX ENGINEERING',
+                key: '3'
             }, {
-                label: 'ACWER'
+                label: 'AAX RAMP',
+                key: '4'
             }, {
-                label: 'AirAsia Charter'
+                label: 'ACWER',
+                key: '5'
             }, {
-                label: 'MACKT_M'
+                label: 'AirAsia Charter',
+                key: '6'
             }, {
-                label: 'PCA'
+                label: 'MACKT_M',
+                key: '7'
             }, {
-                label: 'MALINDO'
+                label: 'PCA',
+                key: '8'
             }, {
-                label: 'VISION V.R.'
+                label: 'MALINDO',
+                key: '9'
+            }, {
+                label: 'VISION V.R.',
+                key: '10'
             }
         ];
+        itech.selectedCompany = itech.companies[0];
+
         itech.breakdownTypes = [
             'engine',
             'transmission gear box',
@@ -151,16 +185,10 @@
             id: 'daily-report-form',
             messages: [],
             title: 'Daily Report',
-            field: {
-                vehicleName: '',
-                companyName: '',
-                distance: '',
-                time: '',
-                checklist: {}
-            }
+            field: {}
         };
         itech.breakdownReport = {
-            id: 'daily-report-form',
+            id: 'breakdown-report-form',
             messages: [],
             title: 'Daily Report',
             field: {
@@ -185,18 +213,44 @@
         });
 
         function init() {
-            var offsetValue = 50;
-            initializeSmoothScroll(offsetValue);
+            if (!itech.token && $state.current.name !== 'login') {
+                $state.go('login');
+            } else {
+                var offsetValue = 50;
+                initializeSmoothScroll(offsetValue);
+    
+                if (!itech.data.vehicle) {
+                    vehicleRs.save({
+                        param: 'list'
+                    }, function successCallback(response) {
+                        itech.data.vehicle = response.vehicles;
+                    }, function failureCallback(response) {
+                        alert('Vehicle list request failed. Please consult system admin.', response);
+                    });
+                }
+            }
+        }
 
-            if (!itech.data.vehicle) {
-                // vehicleRs.save({
-                funCall({
-                    param: 'list'
-                }, function successCallback(response) {
-                    itech.data.vehicle = response.vehicles;
-                }, function failureCallback(response) {
-                    
-                }, 'vehicleRs.save');
+        function getReports(param) {
+            var dateArr = [];
+
+            if (!itech.token && $state.current.name !== 'login') {
+                $state.go('login');
+            } else {
+                if (!itech.data.reports || param === 'update') {
+                    itech.data.reportDate = {};
+                    if (itech.selectedMonth){
+                        dateArr = itech.selectedMonth.split('/');
+                        itech.data.reportDate.month = dateArr[0];
+                        itech.data.reportDate.year = dateArr[1];
+                    }
+                    reportRs.save(itech.data.reportDate, {
+                    }, function successCallback(response) {
+                        itech.data.reports = response.vehicles;
+                    }, function failureCallback(response) {
+                        alert('Reports request failed. Please consult system admin.', response);
+                    });
+                }
             }
         }
 
@@ -226,8 +280,7 @@
         }
 
         function loginSubmit() {
-            funCall({
-            // userRs.save({
+            userRs.save({
                 param: 'login',
                 username: itech.loginForm.username,
                 password: itech.loginForm.password
@@ -240,7 +293,7 @@
                 window.location.reload();
             }, function failureCallback(response) {
                 alert('Login Failed... Please consult system administrator.', response);
-            }, 'userRs.save');
+            });
         }
 
         function logoutSubmit() {
@@ -266,6 +319,26 @@
                 });
             }
         }
+
+        function initDailyCheckForm(fields, dataArr) {
+            angular.forEach(dataArr, function(value, key) {
+                switch(key) {
+                    case 'id':
+                    case 'vehicle_id':
+                    case 'company_id':
+                    case 'time':
+                    case 'distance':
+                    case 'created_at':
+                    case 'updated_at':
+                        fields[key] = value;
+                        break;
+                    default:
+                        fields[key] = value === '1' ? true : false;
+                }
+            });
+
+            return fields;
+        }
         
         function formSubmit(data) {
             data.messages = [];
@@ -288,14 +361,16 @@
                 if (!data.field.userLevel) {
                     data.messages.push({text: 'Please assign user level.'})
                 }
+            } else if (data.id == 'daily-report-form') {
+                
+                // post to api: vehicle/check-list
             } else {
                 data.messages.push({text: 'Invalid data, please consult system administrator.'});
             }
 
             if (data.messages.length) { return; }
 
-            // vehicleRs.post({
-            funCall(data.field, function successCallback(response) {
+            vehicleRs.post(data.field, function successCallback(response) {
                 if (response.status == 'SUCCESS') {
                     itech.data.vehicle.push(response.vehicle);
                     itech.closeModal('add-' + key);
@@ -303,6 +378,14 @@
             }, function failureCallback(response) {
                 alert('Form submit fail...', response);
             }, key + 'Rs.create');
+        }
+
+        function printTable(tableQuery) {
+            var divToPrint = $(tableQuery);
+            var newWin = window.open("");
+            newWin.document.write(divToPrint[0].outerHTML);
+            newWin.print();
+            newWin.close();
         }
 
         function exportToExcel(tableQuery, fileName) {
@@ -318,14 +401,92 @@
 
     function toHourMinute() {
         return function(input){
+            var chunks = input.split(':');
+
             var hours = parseInt(input / 60);
             var minutes = input % 60;
+
+            if (chunks.length > 1) {
+                hours = parseInt(chunks[0]);
+                minutes = parseInt(chunks[1]);
+            } else {
+                hours = parseInt(input / 60);
+                minutes = parseInt(input % 60);
+            }
+
             
             if (hours) {
                 return hours+' hr' + ' ' + minutes + ' min';
             } else {
                 return minutes + ' min';
             }
+        }
+    }
+
+    function getVehicleName() {
+        return function(id, arr) {
+            if (id) {
+                for (var i = 0, len = arr.length; i < len; i++) {
+                    var item = arr[i];
+                    if (eval(id) === item.id) {
+                        return item.name;
+                    }
+                }
+            }
+            return id;
+        }
+    }
+    
+    function getCompanyName() {
+        return function(id, arr) {
+            if (id) {
+                for (var i = 0, len = arr.length; i < len; i++) {
+                    var item = arr[i];
+                    if (id === item.key) {
+                        return item.label;
+                    }
+                }
+            }
+            return id;
+        }
+    }
+
+    function companyFilter() {
+        return function(items, selectedCompany) {
+            var filtered = [];
+            if (selectedCompany.key) {
+                angular.forEach(items, function(item) {
+                    if (item.company_id === selectedCompany.key) {
+                        filtered.push(item);
+                    }
+                });
+            } else {
+                filtered = items;
+            }
+            return filtered;
+        };
+    }
+
+    function monthFilter() {
+        return function(items, selectedMonth) {
+            // return whole array for now
+            return items;
+
+            // if need to sort using js
+            var filtered = [];
+            if (selectedMonth) {
+                var dateArr = selectedMonth.split('/');
+                var monthStr = dateArr[1] + '-' + dateArr[0];
+
+                angular.forEach(items, function(item) {
+                    if (item.report.month === monthStr) {
+                        filtered.push(item);
+                    }
+                });
+            } else {
+                filtered = items;
+            }
+            return filtered;
         }
     }
 })();

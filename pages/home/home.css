@@ -17,12 +17,13 @@
 
 .page-home #itech-datepicker {
     width: 150px;
+    display: inline-block;
 }
 
 .page-home div.modal .vehicle-name {
-    font-size: 130%;
+    font-size: 150%;
     color: darkblue;
 }
 .page-home div.modal .company-name {
-    color: gray;
+    font-size: 150%;
 }
