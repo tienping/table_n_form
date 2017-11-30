@@ -231,7 +231,7 @@
                     }, function successCallback(response) {
                         itech.data.vehicle = response.vehicles;
                     }, function failureCallback(response) {
-                        alert('Vehicle list request failed. Please consult system admin.', response);
+                        console.log('Vehicle list request failed. Please consult system admin.', response);
                     });
                 }
             }
@@ -256,7 +256,7 @@
                     reportRs.save(itech.data.reportDate, function successCallback(response) {
                         itech.data.reports = response.vehicles;
                     }, function failureCallback(response) {
-                        alert('Reports request failed. Please consult system admin.', response);
+                        console.log('Reports request failed. Please consult system admin.', response);
                     });
                 }
             }
@@ -300,7 +300,7 @@
                 $location.path('/home');
                 window.location.reload();
             }, function failureCallback(response) {
-                alert('Login Failed... Please consult system administrator.', response);
+                console.log('Login Failed... Please consult system administrator.', response);
             });
         }
 
