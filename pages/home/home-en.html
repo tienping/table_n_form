@@ -56,9 +56,21 @@
                                             Perform Daily Check
                                         </button>
                                         <button class="cta-breakdown btn btn-secondary btn-sm btn-block"
+                                                ng-if="!vehicle.breakdown"
                                                 ng-click="itech.openModal('breakdown-report-form');
-                                                    itech.breakdownReport.field = vehicle.last_check;">
+                                                    itech.breakdownReport.breakdownInfo = null;
+                                                    itech.breakdownReport.field.vehicle_id = vehicle.id;
+                                                    itech.breakdownReport.field.company_id = vehicle.company_id;">
                                             Report Breakdown
+                                        </button>
+                                        <button class="cta-breakdown btn btn-secondary btn-sm btn-block"
+                                                ng-if="vehicle.breakdown"
+                                                ng-click="itech.openModal('breakdown-report-form');
+                                                    itech.breakdownReport.field.vehicle_id = vehicle.id;
+                                                    itech.breakdownReport.field.company_id = vehicle.company_id;
+                                                    itech.breakdownReport.field.id = vehicle.last_breakdown.id;
+                                                    itech.breakdownReport.breakdownInfo = vehicle.last_breakdown;">
+                                            Report Fixed
                                         </button>
                                     </td>
                                 </tr>
@@ -137,7 +149,7 @@
                     <h3 class="mlab-modal-title m-b-0" ng-bind="itech.dailyReport.title"></h3>
                 </div>
                 <div class="modal-body text-xs-center">  
-                    <form class="form-horizontal text-xs-left" name="itech.addDailyCheck" ng-submit="itech.addDailyCheck(itech.dailyReport.field);">
+                    <form class="form-horizontal text-xs-left" name="itech.addDailyCheck">
                         <div class="m-t-1 m-b-2">
                             <div class="form-group">
                                 <div class="vehicle-name strong"><strong># <span ng-bind="itech.dailyReport.field.vehicle_id | getVehicleName:itech.data.vehicle"></span></strong></div>
@@ -205,25 +217,47 @@
                     <form class="form-horizontal" name="itech.addBreakdown">
                         <div class="m-t-1 m-b-2">
                             <div class="form-group">
-                                <div class="vehicle-name strong"><strong># <span ng-bind="itech.breakdownReport.field.vehicleName"></span></strong></div>
-                                <div class="company-name" ng-bind="itech.breakdownReport.field.companyName"></div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputBreakdownType" class="col-sm-4 control-label">Type of Breakdown *</label>
-                                <div class="col-sm-8">
-                                    <select id="inputBreakdownType" class="itech-selection" ng-model="itech.addUserForm.field.breakdownType">
-                                        <option class="text-capitalize"
-                                                ng-repeat="type in itech.breakdownTypes"
-                                                ng-bind="type" 
-                                                ng-value="type">
-                                        </option>
-                                    </select>
+                                <div class="p-b-1">
+                                    <h6>Vehicle:</h6>
+                                    <h4 ng-bind="itech.breakdownReport.field.vehicle_id | getVehicleName:itech.data.vehicle" ></h4>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputRemark" class="col-sm-4 control-label">Remarks</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputRemark" placeholder="Things to take note" ng-model="itech.breakdownReport.field.remark">
+                                <div class="p-b-1">
+                                    <h6>Company:</h6>
+                                    <h4 ng-bind="itech.breakdownReport.field.company_id | getCompanyName:itech.companies"></h4>
+                                </div>
+                                <div class="breakdown-report" ng-if="!itech.breakdownReport.breakdownInfo">
+                                    <div class="form-group row">
+                                        <label for="inputBreakdownType" class="col-sm-4 control-label">Type of Breakdown *</label>
+                                        <div class="col-sm-8">
+                                            <select id="inputBreakdownType" class="itech-selection" ng-model="itech.breakdownReport.field.breakdownType">
+                                                <option class="text-capitalize"
+                                                        ng-repeat="type in itech.breakdownTypes"
+                                                        ng-bind="type.label" 
+                                                        ng-value="type.key">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputRemark" class="col-sm-4 control-label">Remarks</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="inputRemark" placeholder="Things to take note" ng-model="itech.breakdownReport.field.remarks">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="breakdown-fixed" ng-if="itech.breakdownReport.breakdownInfo">
+                                    <div class="p-b-1">
+                                        <h6>Breakdown Time:</h6>
+                                        <h4>{{ itech.breakdownReport.breakdownInfo.created_at }}</h4>
+                                    </div>
+                                    <div class="p-b-1">
+                                        <h6>Type of Breakdown:</h6>
+                                        <h4 ng-repeat="break in itech.breakdownReport.breakdownInfo | validBreak:itech.breakdownTypes">{{ break }}</h4>
+                                    </div>
+                                    <div class="p-b-1">
+                                        <h6>Remarks:</h6>
+                                        <p style="border: 1px solid lightblue; padding: 0.5rem;">{{ itech.breakdownReport.breakdownInfo.remarks.remarks }}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -232,9 +266,22 @@
                             <div class="text-danger small" ng-repeat="msg in itech.breakdownReport.messages" ng-bind="msg.text"></div>
                         </div>
                         <div class="form-action text-xs-center">
-                            <button type="button" ng-click="itech.formSubmit(itech.breakdownReport);" class="btn btn-primary">
+                            <button type="button" 
+                                    ng-if="!itech.breakdownReport.breakdownInfo"
+                                    ng-click="itech.breakdownSubmit(itech.breakdownReport);"
+                                    class="btn btn-primary">
                                 Submit
-                                <img ng-if="itech.dailyReport.isBusy" 
+                                <img ng-if="itech.breakdownReport.isBusy" 
+                                     src="images/loading.gif" 
+                                     width="28"
+                                     style="margin-left: 10px; margin-right: -10px;">
+                            </button>
+                            <button type="button"
+                                    ng-if="itech.breakdownReport.breakdownInfo"
+                                    ng-click="itech.breakFixedSubmit(itech.breakdownReport);" 
+                                    class="btn btn-danger">
+                                Fixed
+                                <img ng-if="itech.breakdownReport.isBusy" 
                                      src="images/loading.gif" 
                                      width="28"
                                      style="margin-left: 10px; margin-right: -10px;">

@@ -25,10 +25,9 @@
         // VEHICLE_LIST_API = '/vehicle/list'
         // VEHICLE_CREATE_API = '/vehicle/create'
         // VEHICLE_UPDATE_API = '/vehicle/edit'
-        // VEHICLE_FIXED_API = '/vehicle/fixed-breakdown'
-        // VEHICLE_DAILY_API = '/vehicle/check-list'
-        // VEHICLE_BREAKDOWN_API = '/vehicle/breakdown'
-
+        // VEHICLE_FIXED_API = '/vehicle/fixed-breakdown - in progress'
+        // VEHICLE_DAILY_API = '/vehicle/check-list' - done
+        // VEHICLE_BREAKDOWN_API = '/vehicle/breakdown' - done
         return $resource(API_URL + '/vehicle/:param', { param: '@param' });
     }
 

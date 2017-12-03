@@ -7,6 +7,7 @@
         .filter('toHourMinute', toHourMinute)
         .filter('getVehicleName', getVehicleName)
         .filter('getCompanyName', getCompanyName)
+        .filter('validBreak', validBreak)
         .filter('companyFilter', companyFilter)
         .filter('monthFilter', monthFilter);
 
@@ -27,6 +28,8 @@
         itech.exportToExcel  = exportToExcel;
         itech.initDailyCheckForm   = initDailyCheckForm;
         itech.dailyReportSubmit     = dailyReportSubmit;
+        itech.breakdownSubmit     = breakdownSubmit;
+        itech.breakFixedSubmit     = breakFixedSubmit;
         itech.formSubmit     = formSubmit;
 
         itech.token           = getCookie(TOKEN_KEY);
@@ -142,16 +145,37 @@
         itech.selectedCompany = itech.companies[0];
 
         itech.breakdownTypes = [
-            'engine',
-            'transmission gear box',
-            'front axle',
-            'rear axle',
-            'brake',
-            'radiator cooling system',
-            'hydrauic system',
-            'electrical system',
-            'body',
-            'other'
+            {
+                label: 'Engine',
+                key: 'engine'
+            }, {
+                label: 'Transmission Gear Box',
+                key: 'transmission_gear_box'
+            }, {
+                label: 'Front Axle',
+                key: 'front_axle'
+            }, {
+                label: 'Rear Axle',
+                key: 'rear_axle'
+            }, {
+                label: 'Brake',
+                key: 'brake'
+            }, {
+                label: 'Radiator Colling System',
+                key: 'radiator_cooling_system'
+            }, {
+                label: 'Hydrauic System',
+                key: 'hydrauic_system'
+            }, {
+                label: 'Electrical System',
+                key: 'electrical_system'
+            }, {
+                label: 'Body',
+                key: 'body'
+            }, {
+                label: 'Other',
+                key: 'other'
+            }
         ];
 
         itech.loginForm = {
@@ -195,15 +219,9 @@
         itech.breakdownReport = {
             id: 'breakdown-report-form',
             messages: [],
-            title: 'Daily Report',
+            title: 'Breakdown Report',
             isBusy: false,
-            field: {
-                vehicleName: '',
-                companyName: '',
-                distance: '',
-                time: '',
-                checklist: {}
-            }
+            field: {}
         };
 
         $rootScope.$on('$stateChangeSuccess', function() {
@@ -376,6 +394,66 @@
                 data.isBusy = false;
             });
         }
+
+        function breakdownSubmit(data) {
+            data.messages = [];
+
+            if (data.isBusy) {
+                data.messages.push({text: 'Data processing, please wait.'});
+                return;
+            }
+            data.isBusy = true;
+            
+            angular.forEach(itech.breakdownTypes, function(type) {
+                data.field[type.key] = 0;
+            });
+            data.field[data.field.breakdownType] = 1;
+
+            if (!data.field.vehicle_id) {
+                data.messages.push({text: 'Please set Vehicle.'});
+            }
+            if (!data.field.breakdownType) {
+                data.messages.push({text: 'Please set Breakdown Type .'});
+            }
+
+            if (data.messages.length) { return; }
+            
+            data.field.param = 'breakdown';
+            vehicleRs.save(data.field, function successCallback(response) {
+                if (response.status == 'SUCCESS') {
+                    location.reload();
+                }
+            }, function failureCallback(response) {
+                alert('Form submit fail...', response);
+                data.isBusy = false;
+            });
+        }
+
+        function breakFixedSubmit(data) {
+            data.messages = [];
+
+            if (data.isBusy) {
+                data.messages.push({text: 'Data processing, please wait.'});
+                return;
+            }
+            data.isBusy = true;
+            
+            if (!data.field.vehicle_id) {
+                data.messages.push({text: 'Please set Vehicle.'});
+            }
+
+            if (data.messages.length) { return; }
+            
+            data.field.param = 'fixed-breakdown';
+            vehicleRs.save(data.field, function successCallback(response) {
+                if (response.status == 'SUCCESS') {
+                    location.reload();
+                }
+            }, function failureCallback(response) {
+                alert('Form submit fail...', response);
+                data.isBusy = false;
+            });
+        }
         
         function formSubmit(data) {
             data.messages = [];
@@ -483,6 +561,19 @@
             }
             return id;
         }
+    }
+    
+    function validBreak() {
+        return function(items, breakdownTypes) {
+            var validated = [];
+
+            angular.forEach(breakdownTypes, function(breakdownType) {
+                if (items[breakdownType.key] === '1') {
+                    validated.push(breakdownType.label);
+                }
+            });
+            return validated;
+        };
     }
 
     function companyFilter() {
