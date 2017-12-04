@@ -7,12 +7,13 @@
         .filter('toHourMinute', toHourMinute)
         .filter('getVehicleName', getVehicleName)
         .filter('getCompanyName', getCompanyName)
+        .filter('getUserLevelName', getUserLevelName)
         .filter('validBreak', validBreak)
         .filter('companyFilter', companyFilter)
         .filter('monthFilter', monthFilter);
 
-    itechCtrl.$inject = ['$scope', '$rootScope', '$state', 'userRs', 'vehicleRs', 'vehicleListRs', 'reportRs', 'Excel', '$timeout', '$location'];
-    function itechCtrl($scope, $rootScope, $state, userRs, vehicleRs, vehicleListRs, reportRs, Excel, $timeout, $location) {
+    itechCtrl.$inject = ['$scope', '$rootScope', '$state', 'userRs', 'userListRs', 'vehicleRs', 'vehicleListRs', 'reportRs', 'Excel', '$timeout', '$location'];
+    function itechCtrl($scope, $rootScope, $state, userRs, userListRs, vehicleRs, vehicleListRs, reportRs, Excel, $timeout, $location) {
         var itech = this;
         
         itech.init           = init;
@@ -107,6 +108,19 @@
             }
         ];
 
+        itech.userLevels = [
+            {
+                label: 'Manager',
+                key: '1'
+            }, {
+                label: 'Technician',
+                key: '2'
+            }, {
+                label: 'Guest',
+                key: '3'
+            }
+        ];
+
         itech.companies = [
             {
                 label: 'All Company',
@@ -190,6 +204,7 @@
 
         itech.vehicleForm = {
             id: 'vehicle-form',
+            resourceKey: 'vehicle',
             messages: [],
             title: 'Vehicle',
             isBusy: false,
@@ -199,15 +214,16 @@
                 mab_expired: ''
             }
         };
-        itech.addUserForm = {
+        itech.userForm = {
             id: 'user-form',
+            resourceKey: 'user',
             messages: [],
             title: 'User',
             isBusy: false,
             field: {
                 username: '',
                 password: '',
-                userLevel: ''
+                user_level: ''
             }
         };
         itech.dailyReport = {
@@ -253,7 +269,7 @@
         function getVehicle(page) {
             var page = page || 1;
 
-            if (itech.data.paginator && itech.data.paginator.page == page) {
+            if (itech.data.vehiclePaginator && itech.data.vehiclePaginator.page == page) {
                 return;
             }
 
@@ -261,8 +277,8 @@
                 page: page
             }, function successCallback(response) {
                 itech.data.vehicle = response.vehicles;
-                itech.data.paginator = response.paginator;
-                itech.data.paginator.pageArr = new Array(itech.data.paginator.total_page);
+                itech.data.vehiclePaginator = response.paginator;
+                itech.data.vehiclePaginator.pageArr = new Array(itech.data.vehiclePaginator.total_page);
             }, function failureCallback(response) {
                 console.log('Vehicle list request failed. Please consult system admin.', response);
             });
@@ -293,17 +309,22 @@
             }
         }
 
-        function getUserList() {
-            if (!itech.data.userlist) {
-                // vehicleRs.save({
-                funCall({
-                    param: 'list'
-                }, function successCallback(response) {
-                    itech.data.userlist = response.users;
-                }, function failureCallback(response) {
-                    
-                }, 'userListRs.save');
+        function getUserList(page) {
+            var page = page || 1;
+            
+            if (itech.data.userPaginator && itech.data.userPaginator.page == page) {
+                return;
             }
+
+            userListRs.save({
+                page: page
+            }, function successCallback(response) {
+                itech.data.userlist = response.users;
+                itech.data.userPaginator = response.paginator;
+                itech.data.userPaginator.pageArr = new Array(itech.data.userPaginator.total_page);
+            }, function failureCallback(response) {
+                console.log('Vehicle list request failed. Please consult system admin.', response);
+            });
         }
 
         function openModal(id) {
@@ -471,10 +492,7 @@
         function formSubmit(data) {
             data.messages = [];
 
-            var key = '';
-
             if (data.id == 'vehicle-form' && data.field.param != 'delete') {
-                key = 'vehicle';
                 if (!data.field.company_id) {
                     data.messages.push({text: 'Please chose a company.'});
                 }
@@ -482,11 +500,10 @@
                     data.messages.push({text: 'Please assign a name.'});
                 }
             } else if (data.id == 'user-form') {
-                key = 'user';
                 if (!data.field.username) {
                     data.messages.push({text: 'Please chose a username.'});
                 }
-                if (!data.field.userLevel) {
+                if (!data.field.user_level) {
                     data.messages.push({text: 'Please assign user level.'});
                 }
             }
@@ -499,7 +516,14 @@
             }
             data.isBusy = true;
 
-            vehicleRs.save(data.field, function successCallback(response) {
+            var resource = undefined;
+            if (data.resourceKey == 'user') {
+                resource = userRs;
+            } else {
+                resource = vehicleRs;
+            }
+
+            resource.save(data.field, function successCallback(response) {
                 if (response.status == 'SUCCESS') {
                     location.reload();
                 } else {
@@ -583,6 +607,20 @@
         }
     }
     
+    function getUserLevelName() {
+        return function(id, arr) {
+            if (id) {
+                for (var i = 0, len = arr.length; i < len; i++) {
+                    var item = arr[i];
+                    if (parseInt(id) === parseInt(item.key)) {
+                        return item.label;
+                    }
+                }
+            }
+            return id;
+        }
+    }
+    
     function validBreak() {
         return function(items, breakdownTypes) {
             var validated = [];
@@ -635,148 +673,3 @@
         }
     }
 })();
-
-// a fuction to mock up resource calling
-function funCall(params, successCallback, failureCallback, resourceKey) {
-    console.log('Function call: ', { params: params, mockResponse: mockResponse });
-
-    var mockResponse = {
-        data: 'smth'
-    }
-
-    if (resourceKey == 'userRs.save') {
-        mockResponse = {
-            "status": "SUCCESS",
-            "user": {
-                "id": 1,
-                "username": "admin",
-                "user_level": "3",
-                "create_by": null,
-                "created_at": null,
-                "updated_at": null,
-                "companies_list": [],
-                "userlvl": {
-                    "id": 3,
-                    "role": "User",
-                    "code": "user",
-                    "created_at": null,
-                    "updated_at": null
-                }
-            },
-            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6Ly9jaGFtYTY2Ni5jb20vaXRlYy9wdWJsaWMvYXBpLzEuMC91c2VyL2xvZ2luIiwiaWF0IjoxNTA5MDY0MDc2LCJleHAiOjE1NDA2MDAwNzYsIm5iZiI6MTUwOTA2NDA3NiwianRpIjoiVGo4VWVIRExxUGxoU0NyeiJ9.QbUz__sRDHZ_CKzBYcIy141TXzinbmBWpIU21ezFNok"
-        }
-
-        if (params.username == 'admin') {
-            mockResponse.user.user_level = "1";
-            mockResponse.user.userlvl = {
-                "id": 1,
-                "role": "Manager",
-                "code": "manager",
-                "created_at": null,
-                "updated_at": null
-            };
-        }
-    } else if(resourceKey == 'vehicleRs.save') {
-        mockResponse = {
-            vehicles: [
-                {
-                    name: 'vehicle 1',
-                    company_id: 4,
-                    last_check: {
-                        distance: 11,
-                        time: '119' // 1:59
-                    },
-                    num_of_uncheck: 1,
-                    num_of_breakdown: 0,
-                    last_breakdown: null,
-                    "companies_list": {
-                        "id": 4,
-                        "name": "Malindo",
-                        "code": "malindo",
-                        "created_at": null,
-                        "updated_at": null
-                    },
-                    "today_checkin": false,
-                    "breakdown": true
-                },
-                {
-                    name: 'vehicle 2',
-                    company_id: 1,
-                    last_check: {
-                        distance: 7,
-                        time: '39' // 0:39
-                    },
-                    num_of_uncheck: 2,
-                    num_of_breakdown: 3,
-                    last_breakdown: "2017-09-29 12:10:17",
-                    "companies_list": {
-                        "id": 2,
-                        "name": "Malaysia AirLine",
-                        "code": "malaysia_airLine",
-                        "created_at": null,
-                        "updated_at": null
-                    },
-                    "today_checkin": true,
-                    "breakdown": false
-                }
-            ]
-        }
-    } else if(resourceKey == 'vehicleRs.create') {
-        mockResponse = {
-            "status": "SUCCESS",
-            "vehicle": {
-                "name": "test_tp",
-                "company_id": "4",
-                // "mab_expired": null,
-                // "type": null,
-                // "updated_at": "2017-10-27 22:18:20",
-                // "created_at": "2017-10-27 22:18:20",
-                // "id": 12,
-                "companies_list": {
-                    "id": 4,
-                    "name": "Malindo",
-                    "code": "malindo",
-                    "created_at": null,
-                    "updated_at": null
-                },
-                "last_check": null,
-                "last_breakdown": null,
-                "today_checkin": false,
-                // "today_checkin_list": null,
-                "breakdown": false
-            }
-        }
-    } else if(resourceKey == 'userRs.create') {
-        mockResponse = {
-            "status": "SUCCESS",
-            "user": {
-                "id": 3,
-                "username": "user",
-                "user_level": "3",
-                "create_by": null,
-                "created_at": null,
-                "updated_at": null,
-                "companies_list": [],
-                "userlvl": {
-                    "id": 3,
-                    "role": "User",
-                    "code": "user",
-                    "created_at": null,
-                    "updated_at": null
-                }
-            }
-        }
-    } else if(resourceKey == 'userListRs.save') {
-        mockResponse = {
-            users: [
-                {
-                    username: 'user 1'
-                },
-                {
-                    username: 'user 2'
-                }
-            ]
-        }
-    }
-    successCallback(mockResponse);
-}

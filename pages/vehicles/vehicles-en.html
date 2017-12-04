@@ -49,9 +49,9 @@
             <div class="itech-paginator text-xs-center m-t-2">
                 <strong class="p-r-1">Page: </strong>
                 <a class="page-item"
-                   ng-class="{ 'active': itech.data.paginator.page == ($indek + 1) }"
+                   ng-class="{ 'active': itech.data.vehiclePaginator.page == ($indek + 1) }"
                    ng-click="itech.getVehicle($index + 1);"
-                   ng-repeat="page in itech.data.paginator.pageArr track by $index"
+                   ng-repeat="page in itech.data.vehiclePaginator.pageArr track by $index"
                    ng-bind="$index + 1">
                 </a>
             </div>

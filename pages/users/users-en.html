@@ -1,10 +1,14 @@
-<div class="page-users page-users-en english" ng-init="itech.getUserList();"  ng-if="itech.data.user.user_level == '1'">
+<div class="page-users page-users-en english" ng-init="itech.getUserList();" ng-if="itech.data.user.user_level == '1'">
     <section class="container">
         <hr class="m-t-0">
-        <div class="user-list">
-            <div class="text-xs-right m-b-2">
+        <div class="user-list" ng-if="itech.data.userlist">
+            <div class="text-xs-center text-md-right m-b-2">
                 <button class="btn btn-success btn-sm"
-                        ng-click="itech.addUserForm.param = 'create'; itech.addUserForm.field = {}; itech.openModal('user-form'); itech.addUserForm.title = 'Add User'">
+                        ng-click="itech.openModal('user-form');
+                                  itech.userForm.title = 'Add User';
+                                  itech.userForm.field = {};
+                                  itech.userForm.field.param = 'create';
+                                  itech.userForm.field.user_level = '3'">
                     <i class="fa fa-plus"></i>
                     <span>Add New</span>
                 </button>
@@ -19,13 +23,43 @@
                     </div>
                     <div class="col-xs-3 text-xs-right">
                         <button class="action-edit btn btn-info btn-sm"
-                                ng-click="itech.addUserForm.param = 'update'; itech.addUserForm.field = {}; itech.addUserForm.field.username = user.username; itech.openModal('user-form'); itech.addUserForm.title = 'Edit User'">
+                                ng-click="itech.userForm.field = {};
+                                          itech.userForm.field.param = 'edit';
+                                          itech.userForm.field.id = user.id;
+                                          itech.userForm.field.username = user.username;
+                                          itech.userForm.field.password = '';
+                                          itech.userForm.field.user_level = user.user_level;
+                                          itech.userForm.title = 'Edit User';
+                                          itech.openModal('user-form');">
                             <i class="fa fa-pencil"></i>
                             Edit
+                        </button>
+                        <button class="action-edit btn btn-danger btn-sm"
+                                ng-click="itech.userForm.field = {};
+                                        itech.userForm.field.param = 'delete';
+                                        itech.userForm.field.id = user.id;
+                                        itech.userForm.field.username = user.username;
+                                        itech.userForm.field.user_level = user.user_level;
+                                        itech.userForm.title = 'Delete User';
+                                        itech.openModal('user-delete-form');">
+                            <i class="fa fa-trash"></i>
+                            Delete
                         </button>
                     </div>
                 </div>
             </div>
+            <div class="itech-paginator text-xs-center m-t-2">
+                <strong class="p-r-1">Page: </strong>
+                <a class="page-item"
+                   ng-class="{ 'active': itech.data.userPaginator.page == ($indek + 1) }"
+                   ng-click="itech.getUserList($index + 1);"
+                   ng-repeat="page in itech.data.userPaginator.pageArr track by $index"
+                   ng-bind="$index + 1">
+                </a>
+            </div>
+        </div>
+        <div class="loading" ng-if="!itech.data.userlist">
+            Loading...
         </div>
     </section>
 
@@ -36,45 +70,92 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.addUserForm.title"></h3>
+                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.userForm.title"></h3>
                 </div>
-                <div class="modal-body text-xs-center">  
-                    <form class="form-horizontal text-xs-left" name="itech.addUser">
+                <div class="modal-body text-xs-center">
+                    <form class="form-horizontal text-xs-left">
                         <div class="m-t-1 m-b-2">
                             <div class="form-group row">
                                 <label for="inputUsername" class="col-sm-4 control-label">Username *</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputUsername" placeholder="Username for new user" ng-model="itech.addUserForm.field.username">
+                                    <input type="text"
+                                           autocomplete="off"
+                                           class="form-control"
+                                           id="inputUsername"
+                                           placeholder="Username for new user"
+                                           ng-model="itech.userForm.field.username">
                                 </div>
                             </div>
                             
                             <div class="form-group row">
                                 <label for="inputUserPassword" class="col-sm-4 control-label">Password</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputUserPassword" placeholder="Password for new user" ng-model="itech.addUserForm.field.password">
+                                    <input type="password"
+                                           autocomplete="off" 
+                                           class="form-control"
+                                           id="inputUserPassword" 
+                                           placeholder="Password for new user" 
+                                           ng-model="itech.userForm.field.password">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputUserLevel" class="col-sm-4 control-label">User Level *</label>
                                 <div class="col-sm-8">
-                                    <select id="inputUserLevel" class="itech-selection" ng-model="itech.addUserForm.field.userLevel">
-                                        <option class="text-capitalize"
-                                                ng-repeat="level in ['manager', 'technician', 'guest']"
-                                                ng-bind="level" 
-                                                ng-value="level">
-                                        </option>
+                                    <select id="inputUserLevel" class="itech-selection"
+                                            data-ng-options="level.key as level.label for level in itech.userLevels"
+                                            data-ng-model="itech.userForm.field.user_level">
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <hr>
-                        <div class="form-messages text-xs-center p-b-2" ng-show="itech.addUserForm.messages.length">
-                            <div class="text-danger small" ng-repeat="msg in itech.addUserForm.messages" ng-bind="msg.text"></div>
+                        <div class="form-messages text-xs-center p-b-2" ng-show="itech.userForm.messages.length">
+                            <div class="text-danger small" ng-repeat="msg in itech.userForm.messages" ng-bind="msg.text"></div>
                         </div>
                         <div class="form-action text-xs-center">
-                            <button type="button" ng-click="itech.formSubmit(itech.addUserForm);" class="btn btn-primary">
+                            <button type="button" ng-click="itech.formSubmit(itech.userForm);" class="btn btn-primary">
                                 Submit
-                                <img ng-if="itech.dailyReport.isBusy" 
+                                <img ng-if="itech.userForm.isBusy" 
+                                     src="images/loading.gif" 
+                                     width="28"
+                                     style="margin-left: 10px; margin-right: -10px;">
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="user-delete-form" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.userForm.title"></h3>
+                </div>
+                <div class="modal-body text-xs-center">
+                    <form class="form-horizontal text-xs-center" name="itech.deleteUser">
+                        <h4 class="text-danger p-y-2">Are you sure you want to delete this entry?</h4>
+                        <div class="m-t-1 m-b-2">
+                            <div class="p-b-1">
+                                <h6 class="text-muted">Username:</h6>
+                                <h5>{{ itech.userForm.field.username }}</h5>
+                            </div>
+                            <div class="p-b-1">
+                                <h6 class="text-muted">User Level:</h6>
+                                <h5>{{ itech.userForm.field.user_level | getUserLevelName:itech.userLevels }}</h5>
+                            </div>
+                        <hr>
+                        <div class="form-messages text-xs-center p-b-2" ng-show="itech.userForm.messages.length">
+                            <div class="text-danger small" ng-repeat="msg in itech.userForm.messages" ng-bind="msg.text"></div>
+                        </div>
+                        <div class="form-action text-xs-center">
+                            <button type="button" ng-click="itech.formSubmit(itech.userForm);" class="btn btn-danger">
+                                Yes, I want to delete
+                                <img ng-if="itech.userForm.isBusy" 
                                      src="images/loading.gif" 
                                      width="28"
                                      style="margin-left: 10px; margin-right: -10px;">
