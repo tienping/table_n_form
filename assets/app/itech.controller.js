@@ -470,40 +470,40 @@
         
         function formSubmit(data) {
             data.messages = [];
-            
+
+            var key = '';
+
+            if (data.id == 'vehicle-form' && data.field.param != 'delete') {
+                key = 'vehicle';
+                if (!data.field.company_id) {
+                    data.messages.push({text: 'Please chose a company.'});
+                }
+                if (!data.field.name) {
+                    data.messages.push({text: 'Please assign a name.'});
+                }
+            } else if (data.id == 'user-form') {
+                key = 'user';
+                if (!data.field.username) {
+                    data.messages.push({text: 'Please chose a username.'});
+                }
+                if (!data.field.userLevel) {
+                    data.messages.push({text: 'Please assign user level.'});
+                }
+            }
+
+            if (data.messages.length) { return; }
+
             if (data.isBusy) {
                 data.messages.push({text: 'Data processing, please wait.'});
                 return;
             }
             data.isBusy = true;
 
-            var key = '';
-
-            if (data.id == 'vehicle-form') {
-                key = 'vehicle';
-                if (!data.field.company_id) {
-                    data.messages.push({text: 'Please chose a company.'})
-                }
-                if (!data.field.name) {
-                    data.messages.push({text: 'Please assign a name.'})
-                }
-            } else if (data.id == 'user-form') {
-                key = 'user';
-                if (!data.field.username) {
-                    data.messages.push({text: 'Please chose a username.'})
-                }
-                if (!data.field.userLevel) {
-                    data.messages.push({text: 'Please assign user level.'})
-                }
-            } else {
-                data.messages.push({text: 'Invalid data, please consult system administrator.'});
-            }
-
-            if (data.messages.length) { return; }
-
             vehicleRs.save(data.field, function successCallback(response) {
                 if (response.status == 'SUCCESS') {
                     location.reload();
+                } else {
+                    data.messages.push({text: JSON.stringify(response.errors)});
                 }
                 data.isBusy = false;
             }, function failureCallback(response) {
