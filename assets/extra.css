@@ -74,3 +74,18 @@ table.table.table-hover tbody tr:hover {
 .checklist-item .checklist-label:hover {
     font-weight: bolder;
 }
+
+.itech-paginator .page-item {
+    border: 1px solid lightgray;
+    padding: 0.5rem 0.75rem;
+}
+.itech-paginator .page-item:hover {
+    background-color: lavender;
+    color: darkgray;
+}
+.itech-paginator .page-item.active {
+    color: white;
+    background-color: #660033;
+    font-weight: 700;
+    cursor: default;
+}

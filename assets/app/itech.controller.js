@@ -11,11 +11,12 @@
         .filter('companyFilter', companyFilter)
         .filter('monthFilter', monthFilter);
 
-    itechCtrl.$inject = ['$scope', '$rootScope', '$state', 'userRs', 'vehicleRs', 'reportRs', 'Excel', '$timeout', '$location'];
-    function itechCtrl($scope, $rootScope, $state, userRs, vehicleRs, reportRs, Excel, $timeout, $location) {
+    itechCtrl.$inject = ['$scope', '$rootScope', '$state', 'userRs', 'vehicleRs', 'vehicleListRs', 'reportRs', 'Excel', '$timeout', '$location'];
+    function itechCtrl($scope, $rootScope, $state, userRs, vehicleRs, vehicleListRs, reportRs, Excel, $timeout, $location) {
         var itech = this;
         
         itech.init           = init;
+        itech.getVehicle     = getVehicle;
         itech.getReports     = getReports;
         itech.getUserList    = getUserList;
         itech.openModal      = openModal;
@@ -187,7 +188,7 @@
             password: ''
         }
 
-        itech.addVehicleForm = {
+        itech.vehicleForm = {
             id: 'vehicle-form',
             messages: [],
             title: 'Vehicle',
@@ -244,15 +245,27 @@
                 initializeSmoothScroll(offsetValue);
     
                 if (!itech.data.vehicle) {
-                    vehicleRs.save({
-                        param: 'list'
-                    }, function successCallback(response) {
-                        itech.data.vehicle = response.vehicles;
-                    }, function failureCallback(response) {
-                        console.log('Vehicle list request failed. Please consult system admin.', response);
-                    });
+                    itech.getVehicle();
                 }
             }
+        }
+
+        function getVehicle(page) {
+            var page = page || 1;
+
+            if (itech.data.paginator && itech.data.paginator.page == page) {
+                return;
+            }
+
+            vehicleListRs.save({
+                page: page
+            }, function successCallback(response) {
+                itech.data.vehicle = response.vehicles;
+                itech.data.paginator = response.paginator;
+                itech.data.paginator.pageArr = new Array(itech.data.paginator.total_page);
+            }, function failureCallback(response) {
+                console.log('Vehicle list request failed. Please consult system admin.', response);
+            });
         }
 
         function getReports(param) {
@@ -457,6 +470,12 @@
         
         function formSubmit(data) {
             data.messages = [];
+            
+            if (data.isBusy) {
+                data.messages.push({text: 'Data processing, please wait.'});
+                return;
+            }
+            data.isBusy = true;
 
             var key = '';
 
@@ -484,12 +503,13 @@
 
             vehicleRs.save(data.field, function successCallback(response) {
                 if (response.status == 'SUCCESS') {
-                    itech.data.vehicle.push(response.vehicle);
-                    itech.closeModal('add-' + key);
+                    location.reload();
                 }
+                data.isBusy = false;
             }, function failureCallback(response) {
                 alert('Form submit fail...', response);
-            }, key + 'Rs.create');
+                data.isBusy = false;
+            });
         }
 
         function printTable(tableQuery) {

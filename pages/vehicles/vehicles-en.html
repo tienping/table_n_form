@@ -1,10 +1,13 @@
 <div class="page-vehicles page-vehicles-en english" ng-if="itech.data.user.user_level == '1'">
     <section class="container">
         <hr class="m-t-0">
-        <div class="vehicle-list">
-            <div class="text-xs-right m-b-2">
+        <div class="vehicle-list" ng-if="itech.data.vehicle">
+            <div class="text-xs-center text-md-right m-b-2">
                 <button class="btn btn-success btn-sm"
-                        ng-click="itech.addVehicleForm.param = 'create'; itech.openModal('vehicle-form'); itech.addVehicleForm.title = 'Add Vehicle'; itech.addVehicleForm.field = {};">
+                        ng-click="itech.openModal('vehicle-form');
+                                  itech.vehicleForm.title = 'Add Vehicle';
+                                  itech.vehicleForm.field = {};
+                                  itech.vehicleForm.field.param = 'create';">
                     <i class="fa fa-plus"></i>
                     <span>Add New</span>
                 </button>
@@ -17,13 +20,32 @@
                     </div>
                     <div class="col-xs-3 text-xs-right">
                         <button class="action-edit btn btn-info btn-sm"
-                                ng-click="itech.addVehicleForm.param = 'update'; itech.addVehicleForm.field = {}; itech.addVehicleForm.field.name = vehicle.name; itech.openModal('vehicle-form'); itech.addVehicleForm.title = 'Edit Vehicle'">
+                                ng-click="itech.vehicleForm.field = {};
+                                          itech.vehicleForm.field.param = 'edit';
+                                          itech.vehicleForm.field.name = vehicle.name;
+                                          itech.vehicleForm.field.id = vehicle.id;
+                                          itech.vehicleForm.field.company_id = vehicle.company_id;
+                                          itech.vehicleForm.field.mab_expired = vehicle.mab_expired;
+                                          itech.vehicleForm.title = 'Edit Vehicle';
+                                          itech.openModal('vehicle-form');">
                             <i class="fa fa-pencil"></i>
                             Edit
                         </button>
                     </div>
                 </div>
             </div>
+            <div class="itech-paginator text-xs-center m-t-2">
+                <strong class="p-r-1">Page: </strong>
+                <a class="page-item"
+                   ng-class="{ 'active': itech.data.paginator.page == ($indek + 1) }"
+                   ng-click="itech.getVehicle($index + 1);"
+                   ng-repeat="page in itech.data.paginator.pageArr track by $index"
+                   ng-bind="$index + 1">
+                </a>
+            </div>
+        </div>
+        <div class="loading" ng-if="!itech.data.vehicle">
+            Loading...
         </div>
     </section>
 
@@ -34,43 +56,41 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.addVehicleForm.title"></h3>
+                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.vehicleForm.title"></h3>
                 </div>
-                <div class="modal-body text-xs-center">  
+                <div class="modal-body text-xs-center">
                     <form class="form-horizontal text-xs-left" name="itech.addVehicle">
                         <div class="m-t-1 m-b-2">
                             <div class="form-group row">
                                 <label for="inputAssignCompany" class="col-sm-4 control-label">Assign Company *</label>
                                 <div class="col-sm-8">
-                                    <select id="inputAssignCompany" class="itech-selection" ng-model="itech.addVehicleForm.field.company_id">
-                                        <option ng-repeat="company in itech.companies"
-                                                ng-bind="company.label" 
-                                                ng-value="company.label">
-                                        </option>
+                                    <select id="inputAssignCompany" class="itech-selection"
+                                            data-ng-options="company.key as company.label for company in itech.companies"
+                                            data-ng-model="itech.vehicleForm.field.company_id">
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputVehicleName" class="col-sm-4 control-label">Name *</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputVehicleName" placeholder="Vehicle name" ng-model="itech.addVehicleForm.field.name">
+                                    <input type="text" class="form-control" id="inputVehicleName" placeholder="Vehicle name" ng-model="itech.vehicleForm.field.name">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputVehicleMAB" class="col-sm-4 control-label">MAB Expired Date</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputVehicleMAB" placeholder="Vehicle name" ng-model="itech.addVehicleForm.field.mab_expired">
+                                    <input type="date" class="form-control" id="inputVehicleMAB" placeholder="Vehicle name" ng-model="itech.vehicleForm.field.mab_expired">
                                 </div>
                             </div>
                         </div>
                         <hr>
-                        <div class="form-messages text-xs-center p-b-2" ng-show="itech.addVehicleForm.messages.length">
-                            <div class="text-danger small" ng-repeat="msg in itech.addVehicleForm.messages" ng-bind="msg.text"></div>
+                        <div class="form-messages text-xs-center p-b-2" ng-show="itech.vehicleForm.messages.length">
+                            <div class="text-danger small" ng-repeat="msg in itech.vehicleForm.messages" ng-bind="msg.text"></div>
                         </div>
                         <div class="form-action text-xs-center">
-                            <button type="button" ng-click="itech.formSubmit(itech.addVehicleForm);" class="btn btn-primary">
+                            <button type="button" ng-click="itech.formSubmit(itech.vehicleForm);" class="btn btn-primary">
                                 Submit
-                                <img ng-if="itech.dailyReport.isBusy" 
+                                <img ng-if="itech.vehicleForm.isBusy" 
                                      src="images/loading.gif" 
                                      width="28"
                                      style="margin-left: 10px; margin-right: -10px;">
