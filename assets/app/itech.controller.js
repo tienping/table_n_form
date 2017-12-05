@@ -639,7 +639,7 @@
             var filtered = [];
             if (selectedCompany.key) {
                 angular.forEach(items, function(item) {
-                    if (item.company_id === selectedCompany.key) {
+                    if (parseInt(item.company_id) === parseInt(selectedCompany.key)) {
                         filtered.push(item);
                     }
                 });
