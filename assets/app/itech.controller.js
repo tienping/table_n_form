@@ -506,6 +506,21 @@
                 if (!data.field.user_level) {
                     data.messages.push({text: 'Please assign user level.'});
                 }
+                if (data.field.param !== 'delete') {
+                    if (data.field.user_level == '3') {
+                        if (!data.field.selected_company) {
+                            data.messages.push({text: 'Please assign company for guest user.'});
+                        } else {
+                            data.field.companies_list = [data.field.selected_company];
+                        }
+                    } else {
+                        data.field.companies_list = [];
+                    }
+                }
+
+                if (!data.field.password) {
+                    delete data.field.password;
+                }
             }
 
             if (data.messages.length) { return; }

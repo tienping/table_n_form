@@ -8,7 +8,7 @@
                                   itech.userForm.title = 'Add User';
                                   itech.userForm.field = {};
                                   itech.userForm.field.param = 'create';
-                                  itech.userForm.field.user_level = '3'">
+                                  itech.userForm.field.user_level = '1'">
                     <i class="fa fa-plus"></i>
                     <span>Add New</span>
                 </button>
@@ -29,6 +29,7 @@
                                           itech.userForm.field.username = user.username;
                                           itech.userForm.field.password = '';
                                           itech.userForm.field.user_level = user.user_level;
+                                          itech.userForm.field.selected_company = user.companies_list[0].company_id;
                                           itech.userForm.title = 'Edit User';
                                           itech.openModal('user-form');">
                             <i class="fa fa-pencil"></i>
@@ -40,6 +41,7 @@
                                         itech.userForm.field.id = user.id;
                                         itech.userForm.field.username = user.username;
                                         itech.userForm.field.user_level = user.user_level;
+                                        itech.userForm.field.selected_company = user.companies_list[0].company_id;
                                         itech.userForm.title = 'Delete User';
                                         itech.openModal('user-delete-form');">
                             <i class="fa fa-trash"></i>
@@ -73,7 +75,7 @@
                     <h3 class="mlab-modal-title m-b-0" ng-bind="itech.userForm.title"></h3>
                 </div>
                 <div class="modal-body text-xs-center">
-                    <form class="form-horizontal text-xs-left">
+                    <form class="form-horizontal text-xs-left" autocomplete="off">
                         <div class="m-t-1 m-b-2">
                             <div class="form-group row">
                                 <label for="inputUsername" class="col-sm-4 control-label">Username *</label>
@@ -98,12 +100,23 @@
                                            ng-model="itech.userForm.field.password">
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label for="inputUserLevel" class="col-sm-4 control-label">User Level *</label>
                                 <div class="col-sm-8">
                                     <select id="inputUserLevel" class="itech-selection"
                                             data-ng-options="level.key as level.label for level in itech.userLevels"
                                             data-ng-model="itech.userForm.field.user_level">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" ng-if="itech.userForm.field.user_level === '3'">
+                                <label for="inputUserCompany" class="col-sm-4 control-label">Assign Company *</label>
+                                <div class="col-sm-8">
+                                    <select id="inputUserCompany" class="itech-selection"
+                                            data-ng-options="company.key as company.label for company in itech.companies"
+                                            data-ng-model="itech.userForm.field.selected_company">
                                     </select>
                                 </div>
                             </div>
@@ -147,6 +160,10 @@
                             <div class="p-b-1">
                                 <h6 class="text-muted">User Level:</h6>
                                 <h5>{{ itech.userForm.field.user_level | getUserLevelName:itech.userLevels }}</h5>
+                            </div>
+                            <div class="p-b-1" ng-if="itech.userForm.field.selected_company">
+                                <h6 class="text-muted">Assigned Company:</h6>
+                                <h5>{{ itech.userForm.field.selected_company | getCompanyName:itech.companies }}</h5>
                             </div>
                         <hr>
                         <div class="form-messages text-xs-center p-b-2" ng-show="itech.userForm.messages.length">
