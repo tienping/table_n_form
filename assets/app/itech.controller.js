@@ -111,13 +111,13 @@
         itech.userLevels = [
             {
                 label: 'Manager',
-                key: '1'
+                key: 1
             }, {
                 label: 'Technician',
-                key: '2'
+                key: 2
             }, {
                 label: 'Guest',
-                key: '3'
+                key: 3
             }
         ];
 
