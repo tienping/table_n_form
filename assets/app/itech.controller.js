@@ -49,10 +49,6 @@
 
         itech.homeSelections  = [
             {
-                label: 'Action',
-                key: 'action',
-                type: 'list'
-            }, {
                 label: 'Report',
                 key: 'report',
                 type: 'report'
@@ -124,7 +120,7 @@
             }
         ];
 
-        itech.companies = [{
+        itech.full_companies = [{
             key: 'AA_RAMP',
             label: 'AA RAMP',
             company_id: 1,
@@ -278,6 +274,35 @@
             } else {
                 var offsetValue = 50;
                 initializeSmoothScroll(offsetValue);
+
+                if (parseInt(itech.data.user.user_level) < 3) {
+                    itech.homeSelections  = [
+                        {
+                            label: 'Action',
+                            key: 'action',
+                            type: 'list'
+                        }, {
+                            label: 'Report',
+                            key: 'report',
+                            type: 'report'
+                        }
+                    ];
+                    itech.tabSelected = itech.homeSelections[0];
+
+                    itech.companies = itech.full_companies;
+                } else {
+                    itech.companies = itech.data.user.companies_list;
+
+                    for (var i = 0, len = itech.companies.length; i < len; i++) {
+                        angular.forEach(itech.full_companies, function(value, key) {
+                            switch(value.company_id) {
+                                case itech.companies[i].company_id:
+                                    itech.companies[i].label = value.label;
+                            }
+                        });
+                    }
+                    itech.selectedCompany = itech.companies[0];
+                }
     
                 if (!itech.data.vehicle.length) {
                     itech.getVehicle();

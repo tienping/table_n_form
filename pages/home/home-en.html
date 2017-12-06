@@ -16,7 +16,7 @@
                         class="itech-selection" 
                         ng-options="company as company.label for company in itech.companies" 
                         ng-model="itech.selectedCompany">
-                    <option value="">All Company</option>
+                    <option ng-if="itech.data.user.user_level != '3'" value="">All Company</option>
                 </select>
             </div>
         </div>
@@ -172,7 +172,7 @@
                         <div class="m-t-1 m-b-2">
                             <div class="form-group">
                                 <div class="vehicle-name strong"><strong># <span ng-bind="itech.dailyReport.field.vehicle_id | getVehicleName:itech.data.vehicle"></span></strong></div>
-                                <div class="company-name" ng-bind="itech.dailyReport.field.company_id | getCompanyName:itech.companies"></div>
+                                <div class="company-name" ng-bind="itech.dailyReport.field.company_id | getCompanyName:itech.full_companies"></div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputDistance" class="col-sm-4 control-label">Distance *</label>
@@ -242,7 +242,7 @@
                                 </div>
                                 <div class="p-b-1">
                                     <h6>Company:</h6>
-                                    <h4 ng-bind="itech.breakdownReport.field.company_id | getCompanyName:itech.companies"></h4>
+                                    <h4 ng-bind="itech.breakdownReport.field.company_id | getCompanyName:itech.full_companies"></h4>
                                 </div>
                                 <div class="breakdown-report" ng-if="!itech.breakdownReport.breakdownInfo">
                                     <div class="form-group row">

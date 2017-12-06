@@ -162,7 +162,7 @@
                             </div>
                             <div class="p-b-1" ng-if="itech.userForm.field.selected_company">
                                 <h6 class="text-muted">Assigned Company:</h6>
-                                <h5>{{ itech.userForm.field.selected_company | getCompanyName:itech.companies }}</h5>
+                                <h5>{{ itech.userForm.field.selected_company | getCompanyName:itech.full_companies }}</h5>
                             </div>
                         <hr>
                         <div class="form-messages text-xs-center p-b-2" ng-show="itech.userForm.messages.length">
