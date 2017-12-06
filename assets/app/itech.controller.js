@@ -126,9 +126,6 @@
 
         itech.companies = [
             {
-                label: 'All Company',
-                key: null
-            }, {
                 label: 'AA RAMP',
                 key: 1
             }, {
@@ -160,7 +157,7 @@
                 key: 10
             }
         ];
-        itech.selectedCompany = itech.companies[0];
+        itech.selectedCompany = '';
 
         itech.breakdownTypes = [
             {
