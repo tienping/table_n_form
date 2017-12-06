@@ -275,6 +275,11 @@
                 var offsetValue = 50;
                 initializeSmoothScroll(offsetValue);
 
+                var today = new Date();
+                var currentMonth = today.getMonth();
+                var currentYear = today.getFullYear();
+                itech.selectedMonth = currentMonth + '/' + currentYear;
+
                 if (parseInt(itech.data.user.user_level) < 3) {
                     itech.homeSelections  = [
                         {
