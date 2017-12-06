@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <div class="itech-paginator text-xs-center m-t-2">
+            <div class="itech-paginator text-xs-center m-t-2" ng-if="itech.data.userPaginator.pageArr.length > 1">
                 <strong class="p-r-1">Page: </strong>
                 <a class="page-item"
                     ng-click="itech.getUserList(page); itech.data.userlist = [];"

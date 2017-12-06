@@ -20,7 +20,7 @@
     }
     
     function userListRs($resource) {
-        return $resource(API_URL + '/user/list?page=:page', { page: '@page' });
+        return $resource(API_URL + '/user/list?page=:page&length=1000', { page: '@page' });
     }
 
     function vehicleRs($resource) {
@@ -28,10 +28,10 @@
     }
 
     function vehicleListRs($resource) {
-        return $resource(API_URL + '/vehicle/list?page=:page', { page: '@page' });
+        return $resource(API_URL + '/vehicle/list?page=:page&length=1000', { page: '@page' });
     }
 
     function reportRs($resource) {
-        return $resource(API_URL + '/reports?page=:page', { page: '@page' });
+        return $resource(API_URL + '/reports?page=:page&length=1000', { page: '@page' });
     }
 })();

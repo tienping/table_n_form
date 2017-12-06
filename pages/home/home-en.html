@@ -83,11 +83,11 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="itech-paginator text-xs-center m-t-2">
+                        <div class="itech-paginator text-xs-center m-t-2" ng-if="itech.data.vehiclePaginator.pageArr.length > 1">
                             <strong class="p-r-1">Page: </strong>
                             <a class="page-item"
-                            ng-click="itech.getVehicle($index + 1); itech.data.vehicle = [];"
-                            ng-repeat="page in itech.data.vehiclePaginator.pageArr">
+                               ng-click="itech.getVehicle($index + 1); itech.data.vehicle = [];"
+                               ng-repeat="page in itech.data.vehiclePaginator.pageArr">
                             <span ng-class="{ 'active': itech.data.vehiclePaginator.page == page }">{{ page }}</span>
                             </a>
                         </div>
@@ -143,11 +143,11 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="itech-paginator text-xs-center m-t-2">
+                        <div class="itech-paginator text-xs-center m-t-2" ng-if="itech.data.reportsPaginator.pageArr.length > 1">
                             <strong class="p-r-1">Page: </strong>
                             <a class="page-item"
-                            ng-click="itech.getReports($index + 1, 'update'); itech.data.reports = [];"
-                            ng-repeat="page in itech.data.reportsPaginator.pageArr">
+                               ng-click="itech.getReports($index + 1, 'update'); itech.data.reports = [];"
+                               ng-repeat="page in itech.data.reportsPaginator.pageArr">
                             <span ng-class="{ 'active': itech.data.reportsPaginator.page == page }">{{ page }}</span>
                             </a>
                         </div>
