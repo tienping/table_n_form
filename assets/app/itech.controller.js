@@ -124,39 +124,58 @@
             }
         ];
 
-        itech.companies = [
-            {
-                label: 'AA RAMP',
-                key: 1
-            }, {
-                label: 'AA ENGINEERING',
-                key: 2
-            }, {
-                label: 'AAX ENGINEERING',
-                key: 3
-            }, {
-                label: 'AAX RAMP',
-                key: 4
-            }, {
-                label: 'ACWER',
-                key: 5
-            }, {
-                label: 'AirAsia Charter',
-                key: 6
-            }, {
-                label: 'MACKT_M',
-                key: 7
-            }, {
-                label: 'PCA',
-                key: 8
-            }, {
-                label: 'MALINDO',
-                key: 9
-            }, {
-                label: 'VISION V.R.',
-                key: 10
-            }
-        ];
+        itech.companies = [{
+            key: 'AA_RAMP',
+            label: 'AA RAMP',
+            company_id: 1,
+            company_name: 'AA RAMP'
+        },{
+            key: 'AA_ENGINEERING',
+            label: 'AA ENGINEERING',
+            company_id: 2,
+            company_name: 'AA ENGINEERING'
+        },{
+            key: 'AAX_ENGINEERING',
+            label: 'AAX ENGINEERING',
+            company_id: 3,
+            company_name: 'AAX ENGINEERING'
+        },{
+            key: 'AAX_RAMP',
+            label: 'AAX RAMP',
+            company_id: 4,
+            company_name: 'AAX RAMP'
+        },{
+            key: 'ACWER',
+            label: 'ACWER',
+            company_id: 5,
+            company_name: 'ACWER'
+        },{
+            key: 'AirAsia_Charter',
+            label: 'AirAsia Charter',
+            company_id: 6,
+            company_name: 'AirAsia Charter'
+        },{
+            key: 'MACKT_M',
+            label: 'MACKT_M',
+            company_id: 7,
+            company_name: 'MACKT_M'
+        },{
+            key: 'PCA',
+            label: 'PCA',
+            company_id: 8,
+            company_name: 'PCA'
+        },{
+            key: 'MALINDO',
+            label: 'MALINDO',
+            company_id: 9,
+            company_name: 'MALINDO'
+        },{
+            key: 'VISION_VR',
+            label: 'VISION V.R.',
+            company_id: 10,
+            company_name: 'VISION V.R.'
+        }]
+
         itech.selectedCompany = '';
 
         itech.breakdownTypes = [
@@ -629,7 +648,7 @@
             if (id) {
                 for (var i = 0, len = arr.length; i < len; i++) {
                     var item = arr[i];
-                    if (parseInt(id) === parseInt(item.key)) {
+                    if (parseInt(id) === parseInt(item.company_id)) {
                         return item.label;
                     }
                 }
@@ -657,7 +676,7 @@
             var validated = [];
 
             angular.forEach(breakdownTypes, function(breakdownType) {
-                if (items[breakdownType.key] === '1') {
+                if (breakdownType.key === breakdownType.key && items[breakdownType.key]) {
                     validated.push(breakdownType.label);
                 }
             });
@@ -668,9 +687,9 @@
     function companyFilter() {
         return function(items, selectedCompany) {
             var filtered = [];
-            if (selectedCompany && selectedCompany.key) {
+            if (selectedCompany && selectedCompany.company_id) {
                 angular.forEach(items, function(item) {
-                    if (parseInt(item.company_id) === parseInt(selectedCompany.key)) {
+                    if (parseInt(item.company_id) === parseInt(selectedCompany.company_id)) {
                         filtered.push(item);
                     }
                 });

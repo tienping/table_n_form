@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-xs-9">
                         <div class="vehicle-name"><i class="fa fa-car"></i> <span ng-bind="vehicle.name"></span></div>
-                        <div class="vehicle-desc text-muted" ng-bind="itech.companies[vehicle.company_id].label"></div>
+                        <div class="vehicle-desc text-muted" ng-bind="vehicle.company_id | getCompanyName:itech.companies"></div>
                     </div>
                     <div class="col-xs-3 text-xs-right">
                         <button class="action-edit btn btn-info btn-sm"
@@ -76,7 +76,7 @@
                                 <label for="inputAssignCompany" class="col-sm-4 control-label">Assign Company *</label>
                                 <div class="col-sm-8">
                                     <select id="inputAssignCompany" class="itech-selection"
-                                            data-ng-options="company.key as company.label for company in itech.companies"
+                                            data-ng-options="company.company_id as company.label for company in itech.companies"
                                             data-ng-model="itech.vehicleForm.field.company_id">
                                     </select>
                                 </div>
