@@ -325,7 +325,8 @@
 
             itech.data.vehicleloading = true;
             vehicleListRs.save({
-                page: page
+                page: page,
+                length: 1000
             }, function successCallback(response) {
                 itech.data.vehicle = response.vehicles;
                 itech.data.vehiclePaginator = response.paginator;
@@ -356,6 +357,7 @@
                         itech.data.reportDate['year'] = dateArr[1];
                         itech.data.reportDate['month'] = monthString;
                         itech.data.reportDate['page'] = page;
+                        itech.data.reportDate['length'] = 1000;
                     }
                     reportRs.save(itech.data.reportDate, function successCallback(response) {
                         itech.data.reports = response.vehicles;
@@ -380,7 +382,8 @@
             }
 
             userListRs.save({
-                page: page
+                page: page,
+                length: 1000
             }, function successCallback(response) {
                 itech.data.userlist = response.users;
                 itech.data.userPaginator = response.paginator;
