@@ -668,7 +668,7 @@
     function companyFilter() {
         return function(items, selectedCompany) {
             var filtered = [];
-            if (selectedCompany.key) {
+            if (selectedCompany && selectedCompany.key) {
                 angular.forEach(items, function(item) {
                     if (parseInt(item.company_id) === parseInt(selectedCompany.key)) {
                         filtered.push(item);
