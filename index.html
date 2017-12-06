@@ -112,7 +112,7 @@
         </div>
         <div class="site-content m-b-3">
             <h1 class="page-title container text-xs-center text-uppercase" ng-bind="itech.pageTitle"></h1>
-            <section class="_main-ui-view _content p-t-1" ui-view autoscroll="false"></section>
+            <section id="main-ui-view" class="_main-ui-view _content p-t-1" ui-view autoscroll="false"></section>
         </div>
 
         <div class="site-footer flaot-bottom p-y-1" ng-hide="true">
@@ -135,7 +135,7 @@
                 </div>
             </div>
         </div>
-        <div class="scroll-to-top" style="display: block;"><i class="fa fa-angle-up"></i></div>
+        <a class="scroll-to-top" href="@@main-ui-view" style="display: block;"><i class="fa fa-angle-up"></i></a>
         </div>
 
         <div id="login-notification" class="modal fade">
