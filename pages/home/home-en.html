@@ -53,7 +53,7 @@
                                     <td>
                                         <button class="cta-daily btn btn-secondary btn-sm btn-block" 
                                                 ng-click="itech.openModal('daily-report-form');
-                                                    itech.dailyReport.field = itech.initDailyCheckForm(itech.dailyReport.field, vehicle.last_check);">
+                                                    itech.dailyReport.field = itech.initDailyCheckForm(itech.dailyReport.field, vehicle.last_check || vehicle);">
                                             Perform Daily Check
                                         </button>
                                         <button class="cta-breakdown btn btn-secondary btn-sm btn-block"

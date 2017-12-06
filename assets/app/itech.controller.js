@@ -428,9 +428,13 @@
                         fields[key] = value;
                         break;
                     default:
-                        fields[key] = value === '1' ? true : false;
+                        fields[key] = parseInt(value) === 1 ? true : false;
                 }
             });
+
+            if (!fields['vehicle_id']) {
+                fields['vehicle_id'] = fields['id'];
+            }
 
             return fields;
         }
