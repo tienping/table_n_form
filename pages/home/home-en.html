@@ -23,7 +23,7 @@
         <div class="home-content">
             <div class="home-content-item" ng-repeat="item in itech.homeSelections" ng-show="itech.tabSelected.key == item.key">
                 <section class="item-listing" ng-if="item.type == 'list'">
-                    <div ng-show="itech.data.vehicle.length">
+                    <div>
                         <table id="table-{{ item.key }}" class="itech-table table table-responsive table-striped table-bordered table-hover">
                             <thead class="thead bg-primary">
                                 <tr>
@@ -74,15 +74,26 @@
                                         </button>
                                     </td>
                                 </tr>
+                                <tr ng-if="itech.data.vehicleloading">
+                                    <td colspan="5">Loading...</td>
+                                </tr>
+                                <tr ng-if="!itech.data.vehicleloading && !(itech.data.vehicle | companyFilter:itech.selectedCompany).length">
+                                    <td colspan="5">No data found on this page...</td>
+                                </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div ng-hide="itech.data.vehicle.length">
-                        Loading...
+                        <div class="itech-paginator text-xs-center m-t-2">
+                            <strong class="p-r-1">Page: </strong>
+                            <a class="page-item"
+                            ng-click="itech.getVehicle($index + 1); itech.data.vehicle = [];"
+                            ng-repeat="page in itech.data.vehiclePaginator.pageArr">
+                            <span ng-class="{ 'active': itech.data.vehiclePaginator.page == page }">{{ page }}</span>
+                            </a>
+                        </div>
                     </div>
                 </section>
                 <section class="item-report" ng-if="item.type == 'report'" ng-init="itech.getReports();">
-                    <div ng-show="itech.data.reports.length">
+                    <div>
                         <div class="row cta-div p-b-1 p-r-1">
                             <div class="col-xs-6">
                                 <span class="filter-text pull-left" style="padding: .25rem .75rem;">Filter: </span>
@@ -91,11 +102,7 @@
                                        class="form-control form-control-2 input-sm" 
                                        placeholder="Select date"
                                        ng-model="itech.selectedMonth"
-                                       ng-change="itech.getReports('update');">
-                                <button class="cta-buttun cta-download btn btn-secondary btn-sm"
-                                        ng-click="itech.selectedMonth = ''">
-                                    Reset
-                                </button>
+                                       ng-change="itech.getReports('update'); itech.data.reports = [];">
                             </div>
                             <div class="col-xs-6">
                                 <button class="cta-buttun cta-print btn btn-secondary btn-sm pull-right"
@@ -127,11 +134,22 @@
                                     <td class="text-xs-center">{{ vehicle.all_breakdown.length }}</td>
                                     <td>{{ vehicle.report && vehicle.report.last_breakdown }}</td>
                                 </tr>
+                                <tr ng-if="itech.data.reportsloading">
+                                    <td colspan="5">Loading...</td>
+                                </tr>
+                                <tr ng-if="!itech.data.reportsloading && !(itech.data.reports | companyFilter:itech.selectedCompany).length">
+                                    <td colspan="5">No data found on this page...</td>
+                                </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div ng-hide="itech.data.reports.length">
-                        Loading...
+                        <div class="itech-paginator text-xs-center m-t-2">
+                            <strong class="p-r-1">Page: </strong>
+                            <a class="page-item"
+                            ng-click="itech.getReports($index + 1, 'update'); itech.data.reports = [];"
+                            ng-repeat="page in itech.data.reportsPaginator.pageArr">
+                            <span ng-class="{ 'active': itech.data.reportsPaginator.page == page }">{{ page }}</span>
+                            </a>
+                        </div>
                     </div>
                 </section>
             </div>

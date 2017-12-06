@@ -39,8 +39,11 @@
 
         itech.data = {
             user: null,
-            vehicle: null
+            vehicle: [],
+            userlist: [],
+            reports: []
         }
+        itech.selectedMonth = "06/2017";
         var localUserdata = getCookie("ITECHERO");
         if (localUserdata) { itech.data.user = JSON.parse(localUserdata); }
 
@@ -127,34 +130,34 @@
                 key: null
             }, {
                 label: 'AA RAMP',
-                key: '1'
+                key: 1
             }, {
                 label: 'AA ENGINEERING',
-                key: '2'
+                key: 2
             }, {
                 label: 'AAX ENGINEERING',
-                key: '3'
+                key: 3
             }, {
                 label: 'AAX RAMP',
-                key: '4'
+                key: 4
             }, {
                 label: 'ACWER',
-                key: '5'
+                key: 5
             }, {
                 label: 'AirAsia Charter',
-                key: '6'
+                key: 6
             }, {
                 label: 'MACKT_M',
-                key: '7'
+                key: 7
             }, {
                 label: 'PCA',
-                key: '8'
+                key: 8
             }, {
                 label: 'MALINDO',
-                key: '9'
+                key: 9
             }, {
                 label: 'VISION V.R.',
-                key: '10'
+                key: 10
             }
         ];
         itech.selectedCompany = itech.companies[0];
@@ -260,7 +263,7 @@
                 var offsetValue = 50;
                 initializeSmoothScroll(offsetValue);
     
-                if (!itech.data.vehicle) {
+                if (!itech.data.vehicle.length) {
                     itech.getVehicle();
                 }
             }
@@ -273,24 +276,31 @@
                 return;
             }
 
+            itech.data.vehicleloading = true;
             vehicleListRs.save({
                 page: page
             }, function successCallback(response) {
                 itech.data.vehicle = response.vehicles;
                 itech.data.vehiclePaginator = response.paginator;
-                itech.data.vehiclePaginator.pageArr = new Array(itech.data.vehiclePaginator.total_page);
+                itech.data.vehiclePaginator.pageArr = [];
+                for (var i = 1, len = itech.data.vehiclePaginator.total_page; i <= len; i++) {
+                    itech.data.vehiclePaginator.pageArr.push(i);
+                }
+                itech.data.vehicleloading = false;
             }, function failureCallback(response) {
                 console.log('Vehicle list request failed. Please consult system admin.', response);
             });
         }
 
-        function getReports(param) {
+        function getReports(page, param) {
             var dateArr = [];
+            var page = page || 1;
 
             if (!itech.token && $state.current.name !== 'login') {
                 $state.go('login');
             } else {
-                if (!itech.data.reports || param === 'update') {
+                if (!itech.data.reports.length || param === 'update') {
+                    itech.data.reportsloading = true;
                     itech.data.reportDate = {};
                     if (itech.selectedMonth){
                         dateArr = itech.selectedMonth.split('/');
@@ -298,10 +308,16 @@
                         var monthString = monthValue < 10 ? '0' + monthValue : '' + monthValue;
                         itech.data.reportDate['year'] = dateArr[1];
                         itech.data.reportDate['month'] = monthString;
+                        itech.data.reportDate['page'] = page;
                     }
-
                     reportRs.save(itech.data.reportDate, function successCallback(response) {
                         itech.data.reports = response.vehicles;
+                        itech.data.reportsloading = false;
+                        itech.data.reportsPaginator = response.paginator;
+                        itech.data.reportsPaginator.pageArr = [];
+                        for (var i = 1, len = itech.data.reportsPaginator.total_page; i <= len; i++) {
+                            itech.data.reportsPaginator.pageArr.push(i);
+                        }
                     }, function failureCallback(response) {
                         console.log('Reports request failed. Please consult system admin.', response);
                     });
@@ -321,7 +337,10 @@
             }, function successCallback(response) {
                 itech.data.userlist = response.users;
                 itech.data.userPaginator = response.paginator;
-                itech.data.userPaginator.pageArr = new Array(itech.data.userPaginator.total_page);
+                itech.data.userPaginator.pageArr = [];
+                for (var i = 1, len = itech.data.userPaginator.total_page; i <= len; i++) {
+                    itech.data.userPaginator.pageArr.push(i);
+                }
             }, function failureCallback(response) {
                 console.log('Vehicle list request failed. Please consult system admin.', response);
             });
@@ -511,10 +530,10 @@
                         if (!data.field.selected_company) {
                             data.messages.push({text: 'Please assign company for guest user.'});
                         } else {
-                            data.field.companies_list = [data.field.selected_company];
+                            data.field.companies = [data.field.selected_company];
                         }
                     } else {
-                        data.field.companies_list = [];
+                        data.field.companies = [];
                     }
                 }
 

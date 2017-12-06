@@ -75,15 +75,15 @@ table.table.table-hover tbody tr:hover {
     font-weight: bolder;
 }
 
-.itech-paginator .page-item {
+.itech-paginator .page-item span {
     border: 1px solid lightgray;
     padding: 0.5rem 0.75rem;
 }
-.itech-paginator .page-item:hover {
+.itech-paginator .page-item span:hover {
     background-color: lavender;
     color: darkgray;
 }
-.itech-paginator .page-item.active {
+.itech-paginator .page-item span.active {
     color: white;
     background-color: #660033;
     font-weight: 700;

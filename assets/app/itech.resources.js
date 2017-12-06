@@ -32,6 +32,6 @@
     }
 
     function reportRs($resource) {
-        return $resource(API_URL + '/reports');
+        return $resource(API_URL + '/reports?page=:page', { page: '@page' });
     }
 })();

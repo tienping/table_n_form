@@ -53,14 +53,13 @@
             <div class="itech-paginator text-xs-center m-t-2">
                 <strong class="p-r-1">Page: </strong>
                 <a class="page-item"
-                   ng-class="{ 'active': itech.data.userPaginator.page == ($indek + 1) }"
-                   ng-click="itech.getUserList($index + 1);"
-                   ng-repeat="page in itech.data.userPaginator.pageArr track by $index"
-                   ng-bind="$index + 1">
+                    ng-click="itech.getUserList(page); itech.data.userlist = [];"
+                    ng-repeat="page in itech.data.userPaginator.pageArr">
+                    <span ng-class="{ 'active': itech.data.userPaginator.page == page }">{{ page }}</span>
                 </a>
             </div>
         </div>
-        <div class="loading" ng-if="!itech.data.userlist">
+        <div class="loading" ng-if="!itech.data.userlist.length">
             Loading...
         </div>
     </section>
