@@ -19,12 +19,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-        <!--use local font file for testing, can enable this when deploy-->
-        <!--<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Comfortaa%3A400%2C700&amp;ver=4.7.3" type="text/css">
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Comfortaa%3A700" type="text/css">-->
-        <link rel="stylesheet" href="lib/fonts-googleapis-comfortaa-400-700-v4-7-3.css" type="text/css">
-        <link rel="stylesheet" href="lib/fonts-googleapis-comfortaa-700.css" type="text/css">
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Comfortaa%3A400%2C700&amp;ver=4.7.3" type="text/css">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Comfortaa%3A700" type="text/css">
+        <!-- <link rel="stylesheet" href="lib/fonts-googleapis-comfortaa-400-700-v4-7-3.css" type="text/css">
+        <link rel="stylesheet" href="lib/fonts-googleapis-comfortaa-700.css" type="text/css"> -->
     </head>
     <body ng-app="itechApp" ng-controller="itechCtrl as itech" ng-init="itech.init();">
         <button id="responsive-menu-button"
@@ -117,7 +115,7 @@
             <section class="_main-ui-view _content p-t-1" ui-view autoscroll="false"></section>
         </div>
 
-        <div class="site-footer flaot-bottom p-y-1">
+        <div class="site-footer flaot-bottom p-y-1" ng-hide="true">
             <div class="container">
                 <div class="row">                                          
                     <div class="footer-copyright col-xs-12 col-md-4 text-xs-center text-lg-left hidden-xs-up">
