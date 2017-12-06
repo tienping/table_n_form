@@ -276,7 +276,8 @@
                 initializeSmoothScroll(offsetValue);
 
                 var today = new Date();
-                var currentMonth = today.getMonth();
+                var currentMonth = today.getMonth() + 1;
+                currentMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
                 var currentYear = today.getFullYear();
                 itech.selectedMonth = currentMonth + '/' + currentYear;
 
