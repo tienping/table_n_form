@@ -89,3 +89,10 @@ table.table.table-hover tbody tr:hover {
     font-weight: 700;
     cursor: default;
 }
+
+.btn-muted {
+    background: #FDFDFD;
+    color: lightgray;
+    border: 1px solid lightgray;
+    outline: none !important;
+}

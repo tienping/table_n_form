@@ -27,3 +27,22 @@
 .page-home div.modal .company-name {
     font-size: 150%;
 }
+
+#report-details-modal .tab-button {
+    border-bottom: 5px solid transparent;
+    padding-bottom: .5rem;
+}
+#report-details-modal .tab-button.active {
+    border-color: navy;
+}
+
+#report-details-modal .list-item:not(:last-child) {
+    border-bottom: 1px solid gray;
+    margin-bottom: .5rem;
+    padding-bottom: .5rem;
+}
+#report-details-modal .list-item .value {
+    line-height: 14px;
+    font-size: 14px;
+    margin-bottom: 8px;
+}

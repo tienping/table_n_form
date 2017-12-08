@@ -126,6 +126,7 @@
                                     <th width="200">Number of Uncheck</th>
                                     <th width="200">Number of Breakdown</th>
                                     <th width="200">Last Breakdown</th>
+                                    <th width="200"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -134,6 +135,19 @@
                                     <td class="text-xs-center">{{ vehicle.all_uncheck.length }}</td>
                                     <td class="text-xs-center">{{ vehicle.all_breakdown.length }}</td>
                                     <td>{{ vehicle.report && vehicle.report.last_breakdown }}</td>
+                                    <td>
+                                        <button class="btn btn-primary" 
+                                                ng-if="vehicle.all_uncheck.length || vehicle.all_breakdown.length"
+                                                ng-click="itech.reportDetails = vehicle;
+                                                    itech.reportDetails.activeTab = 'uncheck';
+                                                    itech.openModal('report-details-modal');">
+                                            Details
+                                        </button>
+                                        <button class="btn btn-muted" 
+                                                ng-if="!vehicle.all_uncheck.length && !vehicle.all_breakdown.length">
+                                            Details
+                                        </button>
+                                    </td>
                                 </tr>
                                 <tr ng-if="itech.data.reportsloading">
                                     <td colspan="5">Loading...</td>
@@ -170,9 +184,15 @@
                 <div class="modal-body text-xs-center">  
                     <form class="form-horizontal text-xs-left" name="itech.addDailyCheck">
                         <div class="m-t-1 m-b-2">
-                            <div class="form-group">
-                                <div class="vehicle-name strong"><strong># <span ng-bind="itech.dailyReport.field.vehicle_id | getVehicleName:itech.data.vehicle"></span></strong></div>
-                                <div class="company-name" ng-bind="itech.dailyReport.field.company_id | getCompanyName:itech.full_companies"></div>
+                            <div class="form-group row">
+                                <div class="p-b-1 col-sm-6">
+                                    <h6>Vehicle:</h6>
+                                    <h4 ng-bind="itech.dailyReport.field.vehicle_id | getVehicleName:itech.data.vehicle" ></h4>
+                                </div>
+                                <div class="p-b-1 col-sm-6">
+                                    <h6>Company:</h6>
+                                    <h4 ng-bind="itech.dailyReport.field.company_id | getCompanyName:itech.full_companies"></h4>
+                                </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputDistance" class="col-sm-4 control-label">Distance *</label>
@@ -235,15 +255,18 @@
                 <div class="modal-body">  
                     <form class="form-horizontal" name="itech.addBreakdown">
                         <div class="m-t-1 m-b-2">
-                            <div class="form-group">
-                                <div class="p-b-1">
+                            <div class="form-group row">
+                                <div class="p-b-1 col-sm-6">
                                     <h6>Vehicle:</h6>
                                     <h4 ng-bind="itech.breakdownReport.field.vehicle_id | getVehicleName:itech.data.vehicle" ></h4>
                                 </div>
-                                <div class="p-b-1">
+                                <div class="p-b-1 col-sm-6">
                                     <h6>Company:</h6>
                                     <h4 ng-bind="itech.breakdownReport.field.company_id | getCompanyName:itech.full_companies"></h4>
                                 </div>
+                            </div>
+
+                            <div class="form-group">
                                 <div class="breakdown-report" ng-if="!itech.breakdownReport.breakdownInfo">
                                     <div class="form-group row">
                                         <label for="inputBreakdownType" class="col-sm-4 control-label">Type of Breakdown *</label>
@@ -275,7 +298,7 @@
                                     </div>
                                     <div class="p-b-1">
                                         <h6>Remarks:</h6>
-                                        <p style="border: 1px solid lightblue; padding: 0.5rem;">{{ itech.breakdownReport.breakdownInfo.remarks.remarks }}</p>
+                                        <p style="border: 1px solid lightblue; padding: 0.5rem;">{{ itech.breakdownReport.breakdownInfo.remarks.remarks || '-' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -307,6 +330,54 @@
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="report-details-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="mlab-modal-title m-b-0" ng-bind="itech.reportDetails.name"></h3>
+                </div>
+                <div class="modal-body text-xs-center">
+                    <div class="tab-button-div row">
+                        <div class="tab-button col-xs-6" 
+                             ng-class="{ 'active' : itech.reportDetails.activeTab == 'uncheck' }"
+                             ng-click="itech.reportDetails.activeTab = 'uncheck'">
+                             Uncheck
+                        </div>
+                        <div class="tab-button col-xs-6" 
+                             ng-class="{ 'active' : itech.reportDetails.activeTab == 'breakdown' }"
+                             ng-click="itech.reportDetails.activeTab = 'breakdown'">
+                            Breakdown
+                        </div>
+                        <hr class="col-xs-12 m-t-0">
+                    </div>
+                    <div class="text-xs-left">
+                        <div class="uncheck-details row" ng-show="itech.reportDetails.activeTab == 'uncheck'">
+                            <div class="uncheck-item list-item col-xs-12" ng-repeat="uncheck in itech.reportDetails.all_uncheck">
+                                <strong>Uncheck Time:</strong>
+                                <div class="value" ng-bind="uncheck.created_at"></div>
+                            </div>
+                        </div>
+                        <div class="breakdown-details list-item row" ng-show="itech.reportDetails.activeTab == 'breakdown'">
+                            <div class="breakdown-item list-item col-xs-12" ng-repeat="breakdown in itech.reportDetails.all_breakdown">
+                                <strong>Breakdown Time:</strong>
+                                <div class="value" ng-bind="breakdown.created_at"></div>
+                                <strong>Fixed Time:</strong>
+                                <div class="value" ng-bind="breakdown.fixed_date"></div>
+                                <strong>Type of Breakdown:</strong>
+                                <div class="value" ng-repeat="break in breakdown | validBreak:itech.breakdownTypes">{{ break }}</div>
+                                <strong>Remarks:</strong>
+                                <div class="value" ng-bind="breakdown.remarks.remarks || '-'"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
