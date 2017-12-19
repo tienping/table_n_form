@@ -172,7 +172,7 @@
             company_name: 'VISION V.R.'
         }]
 
-        itech.selectedCompany = '';
+        itech.selectedCompany = undefined;
 
         itech.breakdownTypes = [
             {
@@ -307,12 +307,13 @@
                             }
                         });
                     }
-                    itech.selectedCompany = itech.companies[0];
                 }
     
                 if (!itech.data.vehicle.length) {
                     itech.getVehicle();
                 }
+                
+                itech.selectedCompany = itech.companies[0];
             }
         }
 
